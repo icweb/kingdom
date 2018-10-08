@@ -25,7 +25,7 @@ Route::get('/createusersub', function () {
 
 });
 
-Route::get('/webhooks', function (\Illuminate\Http\Request $request) {
+Route::post('/webhooks', function (\Illuminate\Http\Request $request) {
 
     info($request->all());
 
