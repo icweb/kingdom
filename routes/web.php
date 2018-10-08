@@ -29,4 +29,11 @@ Route::get('/webhooks', function (\Illuminate\Http\Request $request) {
 
     info($request->all());
 
+    if(isset($_GET['validationToken']))
+    {
+        return response($_GET['validationToken'], 200)->header('Content-Type', 'text/plain');
+    }
+
+    return response('', 201)->header('Content-Type', 'text/plain');
+
 });
