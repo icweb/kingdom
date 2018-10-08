@@ -42,6 +42,7 @@ class InitialTables extends Migration
 
         Schema::create('ms_resources', function(Blueprint $table){
             $table->increments('id');
+            $table->longText('ms_id')->nullable();
             $table->enum('type', ['USER', 'GROUP']);
 
             // Universal
