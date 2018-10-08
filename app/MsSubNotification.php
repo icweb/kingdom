@@ -16,10 +16,8 @@ class MsSubNotification extends Model
 
     public function produce($data)
     {
-        info($data);
-        foreach($data as $item)
+        foreach($data['value'] as $item)
         {
-            info($item);
             $ms_sub = MsSubscription::where([
                 'subscription_id'   => $item['subscriptionId'],
                 'client_state'      => $item['clientState']
