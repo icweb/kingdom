@@ -54,7 +54,7 @@ class InitialTables extends Migration
             $table->string('mailNickname')->nullable();
 
             // Users
-            $table->unsignedInteger('manager_id')->default(0);
+            $table->string('manager_id')->nullable();
             $table->boolean('accountEnabled')->default(false);
             $table->string('mobilePhone')->nullable();
             $table->string('mail')->nullable();
