@@ -63,7 +63,7 @@ class MsSubscription extends Model
             'change_type'       => $result->getChangeType(),
             'client_state'      => $result->getClientState(),
             'notification_url'  => $result->getNotificationUrl(),
-            'expires_at'        => strtotime($result->getExpirationDateTime()->getTimestamp()),
+            'expires_at'        => date('Y-m-d H:i:s', $result->getExpirationDateTime()->getTimestamp()),
             'subscription_id'   => $result->getId()
         ]);
 
