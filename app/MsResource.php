@@ -47,7 +47,7 @@ class MsResource extends Model
 
     public function getOrCreate($ms_id, $type = 'USER')
     {
-        $ms_resource = MsResource::where(['ms_id' => $ms_id, 'type' => $type])->count();
+        $ms_resource = MsResource::where(['ms_id' => $ms_id, 'type' => $type])->get();
 
         $data = ['ms_id' => $ms_id, 'type'  => $type];
 
@@ -87,7 +87,7 @@ class MsResource extends Model
             $data['mailNickname'] = $group->getMailNickname();
         }
 
-        if($ms_resource)
+        if(count($ms_resource))
         {
             $ms_resource = $ms_resource[0]->update($data);
         }
