@@ -96,6 +96,6 @@ class MsResource extends Model
             $ms_resource = MsResource::create($data);
         }
 
-        return $ms_resource;
+        return MsResource::findOrFail($ms_resource->id);
     }
 }
