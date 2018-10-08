@@ -40,8 +40,6 @@ class MsSubscription extends Model
         $sub->setClientState(md5('ClientStateSecretString'));
         $sub->setNotificationUrl(env('MSG_BASE_URL') . "webhooks");
 
-        return $sub->getNotificationUrl();
-
         $expires = new \DateTime();
         $sub->setExpirationDateTime($expires->modify('+2 days'));
 
