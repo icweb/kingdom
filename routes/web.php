@@ -13,6 +13,8 @@
 
 Route::get('/', function () {
 
+    echo 'You have arrived';
+
 
 });
 
