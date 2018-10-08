@@ -49,46 +49,50 @@ class MsResource extends Model
     {
         $ms_resource = MsResource::where(['ms_id' => $ms_id, 'type' => $type])->count();
 
-        if(!$ms_resource)
+        $data = ['ms_id' => $ms_id, 'type'  => $type];
+
+        if($type === 'USER')
         {
-            $data = ['ms_id' => $ms_id, 'type'  => $type];
+            $user = $this
+                ->graph()
+                ->createRequest("GET", "/users/" . $ms_id)
+                ->setReturnType(User::class)
+                ->execute();
 
-            if($type === 'USER')
-            {
-                $user = $this
-                    ->graph()
-                    ->createRequest("GET", "/users/" . $ms_id)
-                    ->setReturnType(User::class)
-                    ->execute();
+            $data['manager_id'] = $user->getManager()->getId();
+            $data['accountEnabled'] = $user->getAccountEnabled();
+            $data['mobilePhone'] = $user->getMobilePhone();
+            $data['mail'] = $user->getMail();
+            $data['jobTitle'] = $user->getJobTitle();
+            $data['officeLocation'] = $user->getOfficeLocation();
+            $data['department'] = $user->getDepartment();
 
-                $data['manager_id'] = $user->getManager()->getId();
-                $data['accountEnabled'] = $user->getAccountEnabled();
-                $data['mobilePhone'] = $user->getMobilePhone();
-                $data['mail'] = $user->getMail();
-                $data['jobTitle'] = $user->getJobTitle();
-                $data['officeLocation'] = $user->getOfficeLocation();
-                $data['department'] = $user->getDepartment();
+            if(isset($user->getBusinessPhones()[0])) $data['businessPhone_1'] = $user->getBusinessPhones()[0];
+            if(isset($user->getBusinessPhones()[1])) $data['businessPhone_2'] = $user->getBusinessPhones()[1];
+            if(isset($user->getBusinessPhones()[2])) $data['businessPhone_3'] = $user->getBusinessPhones()[2];
+            if(isset($user->getBusinessPhones()[3])) $data['businessPhone_4'] = $user->getBusinessPhones()[3];
+            if(isset($user->getBusinessPhones()[4])) $data['businessPhone_5'] = $user->getBusinessPhones()[4];
+        }
+        else
+        {
+            $group = $this
+                ->graph()
+                ->createRequest("GET", "/groups/" . $ms_id)
+                ->setReturnType(Group::class)
+                ->execute();
 
-                if(isset($user->getBusinessPhones()[0])) $data['businessPhone_1'] = $user->getBusinessPhones()[0];
-                if(isset($user->getBusinessPhones()[1])) $data['businessPhone_2'] = $user->getBusinessPhones()[1];
-                if(isset($user->getBusinessPhones()[2])) $data['businessPhone_3'] = $user->getBusinessPhones()[2];
-                if(isset($user->getBusinessPhones()[3])) $data['businessPhone_4'] = $user->getBusinessPhones()[3];
-                if(isset($user->getBusinessPhones()[4])) $data['businessPhone_5'] = $user->getBusinessPhones()[4];
-            }
-            else
-            {
-                $group = $this
-                    ->graph()
-                    ->createRequest("GET", "/groups/" . $ms_id)
-                    ->setReturnType(Group::class)
-                    ->execute();
+            $data['displayName'] = $group->getDisplayName();
+            $data['description'] = $group->getDescription();
+            $data['mailEnabled'] = $group->getMailEnabled();
+            $data['mailNickname'] = $group->getMailNickname();
+        }
 
-                $data['displayName'] = $group->getDisplayName();
-                $data['description'] = $group->getDescription();
-                $data['mailEnabled'] = $group->getMailEnabled();
-                $data['mailNickname'] = $group->getMailNickname();
-            }
-
+        if($ms_resource)
+        {
+            $ms_resource = $ms_resource[0]->update($data);
+        }
+        else
+        {
             $ms_resource = MsResource::create($data);
         }
 
