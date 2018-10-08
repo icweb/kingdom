@@ -32,7 +32,7 @@ class MsSubscription extends Model
         return $this->graph;
     }
 
-    public function produce(Subscription $subscription)
+    public function produce()
     {
         $sub = new Subscription();
         $sub->setChangeType("updated");
@@ -59,12 +59,12 @@ class MsSubscription extends Model
 //        $ms_sub->save();
 
         $ms_sub = MsSubscription::create([
-            'resource'          => $subscription->getResource(),
-            'change_type'       => $subscription->getChangeType(),
-            'client_state'      => $subscription->getClientState(),
-            'notification_url'  => $subscription->getNotificationUrl(),
-            'expires_at'        => $subscription->getExpirationDateTime()->getTimestamp(),
-            'subscription_id'   => $subscription->getId()
+            'resource'          => $result->getResource(),
+            'change_type'       => $result->getChangeType(),
+            'client_state'      => $result->getClientState(),
+            'notification_url'  => $result->getNotificationUrl(),
+            'expires_at'        => $result->getExpirationDateTime()->getTimestamp(),
+            'subscription_id'   => $result->getId()
         ]);
 
         return $ms_sub;

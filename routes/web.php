@@ -18,6 +18,13 @@ Route::get('/', function () {
 
 });
 
+Route::get('/createusersub', function () {
+
+    $subscription = new \App\MsSubscription();
+    return $subscription->produce();
+
+});
+
 Route::get('/webhooks', function (\Illuminate\Http\Request $request) {
 
     info($request->all());
