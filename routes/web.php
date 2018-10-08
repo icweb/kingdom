@@ -27,6 +27,8 @@ Route::get('/createusersub', function () {
 
 Route::post('/webhooks', function (\Illuminate\Http\Request $request) {
 
+    info('webhooks hit');
+
     info($request->all());
 
     if(isset($_GET['validationToken']))
