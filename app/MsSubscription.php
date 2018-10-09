@@ -32,11 +32,11 @@ class MsSubscription extends Model
         return $this->graph;
     }
 
-    public function produce()
+    public function produce($changeType, $resource)
     {
         $sub = new Subscription();
-        $sub->setChangeType("updated");
-        $sub->setResource("groups");
+        $sub->setChangeType($changeType);
+        $sub->setResource($resource);
         $sub->setClientState(md5('ClientStateSecretString'));
         $sub->setNotificationUrl(env('MSG_BASE_URL') . "webhooks");
 
