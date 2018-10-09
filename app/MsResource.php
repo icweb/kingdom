@@ -213,9 +213,8 @@ class MsResource extends Model
             {
                 $mailboxSettings = $user->getMailboxSettings();
 
-                $ms_resource
-                    ->mailboxSettings()
-                    ->updateOrCreate([
+                MsMailboxSetting::create([
+                        'resource_id'               => $ms_resource->id,
                         'externalAudience'          => $mailboxSettings->getAutomaticRepliesSetting()->getExternalAudience(),
                         'externalReplyMessage'      => $mailboxSettings->getAutomaticRepliesSetting()->getExternalReplyMessage(),
                         'internalReplyMessage'      => $mailboxSettings->getAutomaticRepliesSetting()->getInternalReplyMessage(),
