@@ -162,20 +162,20 @@ class MsResource extends Model
             $data['mailEnabled'] = $group->getMailEnabled();
             $data['mailNickname'] = $group->getMailNickname();
             $data['mail'] = $group->getMail();
-//            $data['classification'] = $group->getClassification();
-//            $data['createdDateTime'] = $group->getCreatedDateTime();
-//            $data['groupTypes'] = $group->getGroupTypes();
-//            $data['onPremisesLastSyncDateTime'] = $group->getOnPremisesLastSyncDateTime();
-//            $data['onPremisesSecurityIdentifier'] = $group->getOnPremisesSecurityIdentifier();
-//            $data['onPremisesSyncEnabled'] = $group->getOnPremisesSyncEnabled();
-//            $data['proxyAddresses'] = $group->getProxyAddresses();
-//            $data['renewedDateTime'] = $group->getRenewedDateTime();
-//            $data['securityEnabled'] = $group->getSecurityEnabled();
-//            $data['visibility'] = $group->getVisibility();
-//            $data['allowExternalSenders'] = $group->getAllowExternalSenders();
-//            $data['autoSubscribeNewMembers'] = $group->getAutoSubscribeNewMembers();
-//            $data['isSubscribedByMail'] = $group->getIsSubscribedByMail();
-//            $data['unseenCount'] = $group->getUnseenCount();
+            $data['classification'] = $group->getClassification();
+            $data['createdDateTime'] = $group->getCreatedDateTime()->format('Y-m-d H:i:s');
+            $data['groupTypes'] = $group->getGroupTypes();
+            $data['onPremisesLastSyncDateTime'] = $group->getOnPremisesLastSyncDateTime()->format('Y-m-d H:i:s');
+            $data['onPremisesSecurityIdentifier'] = $group->getOnPremisesSecurityIdentifier();
+            $data['onPremisesSyncEnabled'] = $group->getOnPremisesSyncEnabled() ? 'Yes' : 'No';
+            $data['proxyAddresses'] = $group->getProxyAddresses();
+            $data['renewedDateTime'] = $group->getRenewedDateTime()->format('Y-m-d H:i:s');
+            $data['securityEnabled'] = $group->getSecurityEnabled() ? 'Yes' : 'No';
+            $data['visibility'] = $group->getVisibility();
+            $data['allowExternalSenders'] = $group->getAllowExternalSenders() ? 'Yes' : 'No';
+            $data['autoSubscribeNewMembers'] = $group->getAutoSubscribeNewMembers() ? 'Yes' : 'No';
+            $data['isSubscribedByMail'] = $group->getIsSubscribedByMail() ? 'Yes' : 'No';
+            $data['unseenCount'] = $group->getUnseenCount();
         }
 
         $ms_resource = MsResource::where(['ms_id' => $ms_id, 'type' => $type])->get();
