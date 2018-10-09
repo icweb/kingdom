@@ -44,12 +44,11 @@ class InitialTables extends Migration
             $table->timestamps();
         });
 
-        Schema::create('ms_subscription_notifications', function(Blueprint $table){
+        Schema::create('ms_webhooks', function(Blueprint $table){
             $table->increments('id');
             $table->unsignedInteger('ms_subscription_id');
             $table->unsignedInteger('ms_resource_id');
             $table->string('change_type');
-            $table->timestamp('completed_at')->nullable();
             $table->timestamps();
         });
 
