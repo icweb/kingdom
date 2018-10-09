@@ -79,4 +79,17 @@ Route::get('/populatedir', function () {
         }
     }
 
+    $groupIterator= $graph->createCollectionRequest("GET", '/groups')
+        ->setReturnType(\Microsoft\Graph\Model\Group::class)
+        ->setPageSize(999);
+
+    while (!$groupIterator->isEnd())
+    {
+        foreach($groupIterator->getPage() as $group)
+        {
+            $resource = new \App\MsResource();
+            $resource->getOrCreate($group->getId(), 'GROUP', 'updated', $group);
+        }
+    }
+
 });
