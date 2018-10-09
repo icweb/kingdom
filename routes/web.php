@@ -38,8 +38,11 @@ Route::get('/setianbirthday', function () {
     $given = $given->format("Y-m-d H:i:s e");
 
     $payload = [
-//        'birthday'    => $given,
-        'aboutMe'     => 'Test about me!'
+        'birthday'    => '1992-05-09T00:00:00Z',
+        'aboutMe'     => 'Test about me!',
+        'city'        => 'Greensburg',
+        'county'      => 'US',
+        'department'  => 'Fiscal'
     ];
 
     $payload = json_encode($payload);
