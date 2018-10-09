@@ -56,7 +56,7 @@ class MsSubNotification extends Model
 
                 MsSubNotification::create([
                     'ms_subscription_id' => $ms_sub[0]->id,
-                    'ms_resource_id'     => $resource->id
+                    'resource_id'     => $resource->id
                 ]);
             }
         }
