@@ -35,7 +35,7 @@ Route::get('/setianbirthday', function () {
 
     $given = new DateTime("1992-05-09");
     $given->setTimezone(new DateTimeZone("UTC"));
-    $given->format("Y-m-d H:i:s e");
+    $given = $given->format("Y-m-d H:i:s e");
 
     $payload = [
         'birthday'    => $given,
@@ -46,17 +46,9 @@ Route::get('/setianbirthday', function () {
 
     info($payload);
 
-    try {
-
-        $graph
-            ->createRequest("PATCH", "/users/iconway@wcsi.org")
-            ->attachBody($payload)
-            ->execute();
-
-    } catch(Exception $e) {
-        dd($e->getBody());
-    }
-
-
+    $graph
+        ->createRequest("PATCH", "/users/iconway@wcsi.org")
+        ->attachBody($payload)
+        ->execute();
 
 });
