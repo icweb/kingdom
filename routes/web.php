@@ -38,7 +38,7 @@ Route::get('/setianbirthday', function () {
     $given = $given->format("Y-m-d H:i:s e");
 
     $payload = [
-        'birthday'    => $given,
+//        'birthday'    => $given,
         'aboutMe'     => 'Test about me!'
     ];
 
