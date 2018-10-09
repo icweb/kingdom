@@ -10,7 +10,7 @@ class MsSubNotification extends Model
 
     public $fillable = [
         'ms_subscription_id',
-        'ms_resource_id',
+        'resource_id',
         'completed_at',
     ];
 
