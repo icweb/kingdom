@@ -209,26 +209,23 @@ class MsResource extends Model
                 $ms_resource = MsResource::create($data);
             }
 
-            if($type === 'USER')
+            if($type === 'USER' && isset($user))
             {
-                if(isset($user))
+                $mailboxSettings = $user->getMailboxSettings();
+
+                info($user);
+
+                if(isset($mailboxSettings))
                 {
-                    $mailboxSettings = $user->getMailboxSettings();
-
-                    info($mailboxSettings);
-
-                    if(isset($mailboxSettings))
-                    {
-                        MsMailboxSetting::create([
-                            'resource_id'               => $ms_resource->id,
-                            'externalAudience'          => $mailboxSettings->getAutomaticRepliesSetting()->getExternalAudience(),
-                            'externalReplyMessage'      => $mailboxSettings->getAutomaticRepliesSetting()->getExternalReplyMessage(),
-                            'internalReplyMessage'      => $mailboxSettings->getAutomaticRepliesSetting()->getInternalReplyMessage(),
-                            'scheduledEndDateTime'      => $mailboxSettings->getAutomaticRepliesSetting()->getScheduledEndDateTime()->format('Y-m-d H:i:s'),
-                            'scheduledStartDateTime'    => $mailboxSettings->getAutomaticRepliesSetting()->getScheduledStartDateTime()->format('Y-m-d H:i:s'),
-                            'status'                    => $mailboxSettings->getAutomaticRepliesSetting()->getStatus(),
-                        ]);
-                    }
+                    MsMailboxSetting::create([
+                        'resource_id'               => $ms_resource->id,
+                        'externalAudience'          => $mailboxSettings->getAutomaticRepliesSetting()->getExternalAudience(),
+                        'externalReplyMessage'      => $mailboxSettings->getAutomaticRepliesSetting()->getExternalReplyMessage(),
+                        'internalReplyMessage'      => $mailboxSettings->getAutomaticRepliesSetting()->getInternalReplyMessage(),
+                        'scheduledEndDateTime'      => $mailboxSettings->getAutomaticRepliesSetting()->getScheduledEndDateTime()->format('Y-m-d H:i:s'),
+                        'scheduledStartDateTime'    => $mailboxSettings->getAutomaticRepliesSetting()->getScheduledStartDateTime()->format('Y-m-d H:i:s'),
+                        'status'                    => $mailboxSettings->getAutomaticRepliesSetting()->getStatus(),
+                    ]);
                 }
             }
             else
