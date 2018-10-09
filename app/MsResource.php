@@ -93,7 +93,7 @@ class MsResource extends Model
         return $this->graph;
     }
 
-    public function getOrCreate($ms_id, $type = 'USER', $changeType)
+    public function getOrCreate($ms_id, $type = 'USER', $changeType, $apiResults = false)
     {
         if($changeType !== 'deleted')
         {
@@ -101,11 +101,18 @@ class MsResource extends Model
 
             if($type === 'USER')
             {
-                $user = $this
-                    ->graph()
-                    ->createRequest("GET", "/users/" . $ms_id)
-                    ->setReturnType(User::class)
-                    ->execute();
+                if($apiResults)
+                {
+                    $user = $apiResults;
+                }
+                else
+                {
+                    $user = $this
+                        ->graph()
+                        ->createRequest("GET", "/users/" . $ms_id)
+                        ->setReturnType(User::class)
+                        ->execute();
+                }
 
                 $data['displayName'] = $user->getDisplayName();
                // $data['manager_id'] = $user->getManager()->getId();
@@ -155,11 +162,18 @@ class MsResource extends Model
             }
             else
             {
-                $group = $this
-                    ->graph()
-                    ->createRequest("GET", "/groups/" . $ms_id)
-                    ->setReturnType(Group::class)
-                    ->execute();
+                if($apiResults)
+                {
+                    $group = $apiResults;
+                }
+                else
+                {
+                    $group = $this
+                        ->graph()
+                        ->createRequest("GET", "/groups/" . $ms_id)
+                        ->setReturnType(Group::class)
+                        ->execute();
+                }
 
                 $data['displayName'] = $group->getDisplayName();
                 $data['description'] = $group->getDescription();

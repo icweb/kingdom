@@ -62,6 +62,18 @@ class InitialTables extends Migration
             $table->timestamps();
         });
 
+        Schema::create('changes_queue', function(Blueprint $table){
+            $table->increments('id');
+            $table->unsignedInteger('in_progress')->default(0);
+            $table->unsignedInteger('completed')->default(0);
+            $table->unsignedInteger('resource_id');
+            $table->unsignedInteger('subscription_id');
+            $table->unsignedInteger('watched_field_id');
+            $table->string('old')->nullable();
+            $table->string('new')->nullable();
+            $table->timestamps();
+        });
+
         Schema::create('ms_webhooks', function(Blueprint $table){
             $table->increments('id');
             $table->unsignedInteger('ms_subscription_id');

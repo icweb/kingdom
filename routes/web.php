@@ -46,8 +46,6 @@ Route::get('/setianbirthday', function () {
 
     info($payload);
 
-
-
     try {
 
         $graph
@@ -59,6 +57,26 @@ Route::get('/setianbirthday', function () {
 
         info($e->getResponse()->getBody()->getContents());
 
+    }
+
+});
+
+Route::get('/populatedir', function () {
+
+    $graph = new \Microsoft\Graph\Graph();
+    $graph = $graph->setAccessToken(\App\Token::fetch());
+
+    $userIterator = $graph->createCollectionRequest("GET", '/users')
+        ->setReturnType(\Microsoft\Graph\Model\User::class)
+        ->setPageSize(999);
+
+    while (!$userIterator->isEnd())
+    {
+        foreach($userIterator->getPage() as $user)
+        {
+            $resource = new \App\MsResource();
+            $resource->getOrCreate($user->getId(), 'USER', 'updated', $user);
+        }
     }
 
 });
