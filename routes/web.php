@@ -38,7 +38,7 @@ Route::post('/webhooks', function (\Illuminate\Http\Request $request) {
         return response($_GET['validationToken'], 200)->header('Content-Type', 'text/plain');
     }
 
-    $notification = new \App\MsSubNotification();
+    $notification = new \App\MsWebhooks();
     $notification->produce($request->all());
 
     return response('', 201)->header('Content-Type', 'text/plain');
