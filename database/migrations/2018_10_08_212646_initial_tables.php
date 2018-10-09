@@ -13,7 +13,7 @@ class InitialTables extends Migration
      */
     public function up()
     {
-        Schema::create('tokens', function(Blueprint $table){
+        Schema::create('ms_tokens', function(Blueprint $table){
             $table->increments('id');
             $table->longText('token');
             $table->longText('tenant_id');

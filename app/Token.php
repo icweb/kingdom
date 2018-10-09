@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Token extends Model
 {
+    protected $table = 'ms_tokens';
+
     protected $dates = [
         'expires_at'
     ];
