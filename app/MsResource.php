@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Microsoft\Graph\Graph;
 use Microsoft\Graph\Model\Group;
+use Microsoft\Graph\Model\MailboxSettings;
 use Microsoft\Graph\Model\User;
 use Mpociot\Versionable\VersionableTrait;
 
@@ -208,11 +209,63 @@ class MsResource extends Model
                 $ms_resource = MsResource::create($data);
             }
 
+            if($type === 'USER')
+            {
+                $mailboxSettings = $user->getMailboxSettings();
+
+                $ms_resource
+                    ->mailboxSettings()
+                    ->updateOrCreate([
+                        'externalAudience'          => $user->getAutomaticRepliesSetting()->getExternalAudience(),
+                        'externalReplyMessage'      => $user->getAutomaticRepliesSetting()->getExternalReplyMessage(),
+                        'internalReplyMessage'      => $user->getAutomaticRepliesSetting()->getInternalReplyMessage(),
+                        'scheduledEndDateTime'      => $user->getAutomaticRepliesSetting()->getScheduledEndDateTime()->format('Y-m-d H:i:s'),
+                        'scheduledStartDateTime'    => $user->getAutomaticRepliesSetting()->getScheduledStartDateTime()->format('Y-m-d H:i:s'),
+                        'status'                    => $user->getAutomaticRepliesSetting()->getStatus(),
+                    ]);
+            }
+            else
+            {
+
+            }
+
             return MsResource::findOrFail($ms_resource->id);
         }
         else
         {
             return (object)['id' => 0];
         }
+    }
+
+    public function populateDirectory()
+    {
+        $graph = new Graph();
+        $graph = $graph->setAccessToken(Token::fetch());
+
+        $resources = [
+            'users'  => User::class,
+            'groups' => Group::class
+        ];
+
+        foreach($resources as $key => $val)
+        {
+            $iterator = $graph->createCollectionRequest("GET", '/' . $key)
+                ->setReturnType($val)
+                ->setPageSize(999);
+
+            while (!$iterator->isEnd())
+            {
+                foreach($iterator->getPage() as $item)
+                {
+                    $resource = new MsResource();
+                    $resource->getOrCreate($item->getId(), substr(strtoupper($key), -1), 'updated', $item);
+                }
+            }
+        }
+    }
+
+    public function mailboxSettings()
+    {
+        return $this->hasOne(MailboxSettings::class, 'resource_id', 'id');
     }
 }

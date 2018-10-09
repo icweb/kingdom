@@ -60,36 +60,3 @@ Route::get('/setianbirthday', function () {
     }
 
 });
-
-Route::get('/populatedir', function () {
-
-    $graph = new \Microsoft\Graph\Graph();
-    $graph = $graph->setAccessToken(\App\Token::fetch());
-
-    $userIterator = $graph->createCollectionRequest("GET", '/users')
-        ->setReturnType(\Microsoft\Graph\Model\User::class)
-        ->setPageSize(999);
-
-    while (!$userIterator->isEnd())
-    {
-        foreach($userIterator->getPage() as $user)
-        {
-            $resource = new \App\MsResource();
-            $resource->getOrCreate($user->getId(), 'USER', 'updated', $user);
-        }
-    }
-
-    $groupIterator= $graph->createCollectionRequest("GET", '/groups')
-        ->setReturnType(\Microsoft\Graph\Model\Group::class)
-        ->setPageSize(999);
-
-    while (!$groupIterator->isEnd())
-    {
-        foreach($groupIterator->getPage() as $group)
-        {
-            $resource = new \App\MsResource();
-            $resource->getOrCreate($group->getId(), 'GROUP', 'updated', $group);
-        }
-    }
-
-});

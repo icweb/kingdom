@@ -96,7 +96,7 @@ class InitialTables extends Migration
             $table->longText('proxyAddresses')->nullable();
 
             // Groups
-            $table->string('description')->nullable();
+            $table->longText('description')->nullable();
             $table->boolean('mailEnabled')->default(false);
 
             $table->string('classification')->nullable();
@@ -208,6 +208,18 @@ class InitialTables extends Migration
             //$table->string('deviceManagementTroubleshootingEvents')->nullable();
             //$table->string('activities')->nullable();
 
+            $table->timestamps();
+        });
+
+        Schema::create('ms_mailbox_settings', function(Blueprint $table){
+            $table->increments('id');
+            $table->unsignedInteger('resource_id');
+            $table->string('externalAudience')->nullable();
+            $table->string('externalReplyMessage')->nullable();
+            $table->string('internalReplyMessage')->nullable();
+            $table->string('scheduledEndDateTime')->nullable();
+            $table->string('scheduledStartDateTime')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
 

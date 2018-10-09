@@ -16,5 +16,8 @@ class AppSeeder extends Seeder
             'token'         => 'NA',
             'expires_at'    => time()
         ]);
+
+        $resource = new \App\MsResource();
+        $resource->populateDirectory();
     }
 }
