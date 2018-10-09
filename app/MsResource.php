@@ -178,14 +178,12 @@ class MsResource extends Model
         if(count($ms_resource))
         {
             $ms_resource = $ms_resource[0];
-            $ms_resource = $ms_resource->update($data);
+            $ms_resource->update($data);
         }
         else
         {
             $ms_resource = MsResource::create($data);
         }
-
-        info([$ms_resource]);
 
         return MsResource::findOrFail($ms_resource->id);
     }
