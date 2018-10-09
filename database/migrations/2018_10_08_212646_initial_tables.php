@@ -201,7 +201,7 @@ class InitialTables extends Migration
 
         \Illuminate\Support\Facades\DB::statement("CREATE VIEW users AS
             (
-                SELECT displayName as name, mail as email, created_at, updated_at
+                SELECT id, displayName as name, mail as email, created_at, updated_at
                 FROM ms_resources
                 WHERE type = 'USER'
             )
