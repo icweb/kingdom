@@ -213,7 +213,7 @@ class MsResource extends Model
             {
                 $mailboxSettings = $user->getMailboxSettings();
 
-                info($user);
+                info([$user]);
 
                 if(isset($mailboxSettings))
                 {
