@@ -243,8 +243,7 @@ class MsResource extends Model
         $graph = $graph->setAccessToken(Token::fetch());
 
         $resources = [
-            'users'  => User::class,
-            'groups' => Group::class
+            'users'  => User::class
         ];
 
         foreach($resources as $key => $val)
