@@ -165,13 +165,13 @@ class MsResource extends Model
                 $data['mailNickname'] = $group->getMailNickname();
                 $data['mail'] = $group->getMail();
                 $data['classification'] = $group->getClassification();
-                $data['createdDateTime'] = $group->getCreatedDateTime()->format('Y-m-d H:i:s');
+                //$data['createdDateTime'] = $group->getCreatedDateTime()->format('Y-m-d H:i:s');
                 $data['groupTypes'] = $group->getGroupTypes();
-                $data['onPremisesLastSyncDateTime'] = $group->getOnPremisesLastSyncDateTime()->format('Y-m-d H:i:s');
+                //$data['onPremisesLastSyncDateTime'] = $group->getOnPremisesLastSyncDateTime()->format('Y-m-d H:i:s');
                 $data['onPremisesSecurityIdentifier'] = $group->getOnPremisesSecurityIdentifier();
                 $data['onPremisesSyncEnabled'] = $group->getOnPremisesSyncEnabled() ? 'Yes' : 'No';
                 $data['proxyAddresses'] = $group->getProxyAddresses();
-                $data['renewedDateTime'] = $group->getRenewedDateTime()->format('Y-m-d H:i:s');
+                //$data['renewedDateTime'] = $group->getRenewedDateTime()->format('Y-m-d H:i:s');
                 $data['securityEnabled'] = $group->getSecurityEnabled() ? 'Yes' : 'No';
                 $data['visibility'] = $group->getVisibility();
                 $data['allowExternalSenders'] = $group->getAllowExternalSenders() ? 'Yes' : 'No';
