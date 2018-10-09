@@ -109,7 +109,7 @@ class MsResource extends Model
 
                 $data['displayName'] = $user->getDisplayName();
                // $data['manager_id'] = $user->getManager()->getId();
-                $data['accountEnabled'] = $user->getAccountEnabled();
+                $data['accountEnabled'] = $user->getAccountEnabled() ? 'Yes' : 'No';
                 $data['mobilePhone'] = $user->getMobilePhone();
                 $data['mail'] = $user->getMail();
                 $data['jobTitle'] = $user->getJobTitle();
