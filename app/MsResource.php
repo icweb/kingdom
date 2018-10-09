@@ -211,7 +211,10 @@ class MsResource extends Model
 
             if($type === 'USER')
             {
-                $mailboxSettings = $user->getMailboxSettings();
+                if(isset($user))
+                {
+                    $mailboxSettings = $user->getMailboxSettings();
+                }
 
                 MsMailboxSetting::create([
                         'resource_id'               => $ms_resource->id,
