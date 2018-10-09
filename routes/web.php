@@ -40,7 +40,7 @@ Route::get('/setianbirthday', function () {
     $payload = [
         'birthday'    => '1992-05-09T00:00:00Z',
         'aboutMe'     => 'Test about me!',
-//        'city'        => 'Greensburg',
+        'city'        => 'New Kensington',
 //        'county'      => 'US',
 //        'department'  => 'Fiscal'
     ];
@@ -61,7 +61,6 @@ Route::get('/setianbirthday', function () {
     } catch(Exception $e) {
 
         info($e->getResponse()->getBody()->getContents());
-        dd($e->getResponse()->getBody()->getContents());
 
     }
 
