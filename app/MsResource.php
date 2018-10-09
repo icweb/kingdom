@@ -32,6 +32,47 @@ class MsResource extends Model
         'businessPhone_3',
         'businessPhone_4',
         'businessPhone_5',
+        'city',
+        'companyName',
+        'country',
+        'givenName',
+        'imAddresses',
+        'onPremisesImmutableId',
+        'passwordPolicies',
+        'postalCode',
+        'preferredLanguage',
+        'state',
+        'streetAddress',
+        'surname',
+        'usageLocation',
+        'userPrincipalName',
+        'userType',
+        'aboutMe',
+        'birthday',
+        'hireDate',
+        'interests',
+        'mySite',
+        'pastProjects',
+        'preferredName',
+        'responsibilities',
+        'schools',
+        'skills',
+        'deviceEnrollmentLimit',
+        'classification',
+        'createdDateTime',
+        'groupTypes',
+        'renewedDateTime',
+        'securityEnabled',
+        'visibility',
+        'allowExternalSenders',
+        'autoSubscribeNewMembers',
+        'isSubscribedByMail',
+        'unseenCount',
+        'mailNickname',
+        'onPremisesLastSyncDateTime',
+        'onPremisesSecurityIdentifier',
+        'onPremisesSyncEnabled',
+        'proxyAddresses',
     ];
 
     private function graph()
@@ -57,6 +98,7 @@ class MsResource extends Model
                 ->setReturnType(User::class)
                 ->execute();
 
+            $data['displayName'] = $user->getDisplayName();
             $data['manager_id'] = $user->getManager()->getId();
             $data['accountEnabled'] = $user->getAccountEnabled();
             $data['mobilePhone'] = $user->getMobilePhone();
@@ -64,6 +106,37 @@ class MsResource extends Model
             $data['jobTitle'] = $user->getJobTitle();
             $data['officeLocation'] = $user->getOfficeLocation();
             $data['department'] = $user->getDepartment();
+            $data['mailNickname'] = $user->getMailNickname();
+            $data['onPremisesLastSyncDateTime'] = $user->getOnPremisesLastSyncDateTime();
+            $data['onPremisesSecurityIdentifier'] = $user->getOnPremisesSecurityIdentifier();
+            $data['onPremisesSyncEnabled'] = $user->getOnPremisesSyncEnabled();
+            $data['proxyAddresses'] = $user->getProxyAddresses();
+            $data['city'] = $user->getCity();
+            $data['companyName'] = $user->getCompanyName();
+            $data['country'] = $user->getCountry();
+            $data['givenName'] = $user->getGivenName();
+            $data['imAddresses'] = $user->getImAddresses();
+            $data['onPremisesImmutableId'] = $user->getOnPremisesImmutableId();
+            $data['passwordPolicies'] = $user->getPasswordPolicies();
+            $data['postalCode'] = $user->getPostalCode();
+            $data['preferredLanguage'] = $user->getPreferredLanguage();
+            $data['state'] = $user->getState();
+            $data['streetAddress'] = $user->getStreetAddress();
+            $data['surname'] = $user->getSurname();
+            $data['usageLocation'] = $user->getUsageLocation();
+            $data['userPrincipalName'] = $user->getUserPrincipalName();
+            $data['userType'] = $user->getUserType();
+            $data['aboutMe'] = $user->getAboutMe();
+            $data['birthday'] = $user->getBirthday();
+            $data['hireDate'] = $user->getHireDate();
+            $data['interests'] = $user->getInterests();
+            $data['mySite'] = $user->getMySite();
+            $data['pastProjects'] = $user->getPastProjects();
+            $data['preferredName'] = $user->getPreferredName();
+            $data['responsibilities'] = $user->getResponsibilities();
+            $data['schools'] = $user->getSchools();
+            $data['skills'] = $user->getSkills();
+            $data['deviceEnrollmentLimit'] = $user->getDeviceEnrollmentLimit();
 
             if(isset($user->getBusinessPhones()[0])) $data['businessPhone_1'] = $user->getBusinessPhones()[0];
             if(isset($user->getBusinessPhones()[1])) $data['businessPhone_2'] = $user->getBusinessPhones()[1];
@@ -83,6 +156,21 @@ class MsResource extends Model
             $data['description'] = $group->getDescription();
             $data['mailEnabled'] = $group->getMailEnabled();
             $data['mailNickname'] = $group->getMailNickname();
+            $data['mail'] = $group->getMail();
+            $data['classification'] = $group->getClassification();
+            $data['createdDateTime'] = $group->getCreatedDateTime();
+            $data['groupTypes'] = $group->getGroupTypes();
+            $data['onPremisesLastSyncDateTime'] = $group->getOnPremisesLastSyncDateTime();
+            $data['onPremisesSecurityIdentifier'] = $group->getOnPremisesSecurityIdentifier();
+            $data['onPremisesSyncEnabled'] = $group->getOnPremisesSyncEnabled();
+            $data['proxyAddresses'] = $group->getProxyAddresses();
+            $data['renewedDateTime'] = $group->getRenewedDateTime();
+            $data['securityEnabled'] = $group->getSecurityEnabled();
+            $data['visibility'] = $group->getVisibility();
+            $data['allowExternalSenders'] = $group->getAllowExternalSenders();
+            $data['autoSubscribeNewMembers'] = $group->getAutoSubscribeNewMembers();
+            $data['isSubscribedByMail'] = $group->getIsSubscribedByMail();
+            $data['unseenCount'] = $group->getUnseenCount();
         }
 
         $ms_resource = MsResource::where(['ms_id' => $ms_id, 'type' => $type])->get();
