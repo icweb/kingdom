@@ -42,9 +42,21 @@ Route::get('/setianbirthday', function () {
         'aboutMe'     => 'Test about me!'
     ];
 
-    $graph
-        ->createRequest("PATCH", "/users/iconway@wcsi.org")
-        ->attachBody(json_encode($payload))
-        ->execute();
+    $payload = json_encode($payload);
+
+    info($payload);
+
+    try {
+
+        $graph
+            ->createRequest("PATCH", "/users/iconway@wcsi.org")
+            ->attachBody($payload)
+            ->execute();
+
+    } catch(Exception $e) {
+        dd($e->getBody());
+    }
+
+
 
 });
