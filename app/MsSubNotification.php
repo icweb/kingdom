@@ -11,6 +11,7 @@ class MsSubNotification extends Model
     public $fillable = [
         'ms_subscription_id',
         'ms_resource_id',
+        'change_type',
         'completed_at',
     ];
 
@@ -56,7 +57,8 @@ class MsSubNotification extends Model
 
                 MsSubNotification::create([
                     'ms_subscription_id' => $ms_sub[0]->id,
-                    'ms_resource_id'     => $resource->id
+                    'ms_resource_id'     => $resource->id,
+                    'change_type'        => $item['changeType'],
                 ]);
             }
         }

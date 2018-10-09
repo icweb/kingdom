@@ -48,6 +48,7 @@ class InitialTables extends Migration
             $table->increments('id');
             $table->unsignedInteger('ms_subscription_id');
             $table->unsignedInteger('ms_resource_id');
+            $table->string('change_type');
             $table->timestamp('completed_at')->nullable();
             $table->timestamps();
         });
