@@ -40,9 +40,6 @@ Route::get('/setianbirthday', function () {
     $payload = [
         'birthday'    => '1992-05-09T00:00:00Z',
         'aboutMe'     => 'Test about me!',
-        'city'        => 'New Kensington',
-//        'county'      => 'US',
-//        'department'  => 'Fiscal'
     ];
 
     $payload = json_encode($payload);
