@@ -37,10 +37,13 @@ Route::get('/setianbirthday', function () {
     $given->setTimezone(new DateTimeZone("UTC"));
     $given->format("Y-m-d H:i:s e");
 
+    $payload = [
+        'birthday'    => $given->format("Y-m-d H:i:s e")
+    ];
 
     $graph
         ->createRequest("PATCH", "/users/iconway@wcsi.org")
-        ->attachBody('{"birthday": ' . $given->format("Y-m-d H:i:s e") . '}')
+        ->attachBody(json_encode($payload))
         ->execute();
 
 });
