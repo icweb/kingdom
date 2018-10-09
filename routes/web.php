@@ -46,9 +46,20 @@ Route::get('/setianbirthday', function () {
 
     info($payload);
 
-    $graph
-        ->createRequest("PATCH", "/users/iconway@wcsi.org")
-        ->attachBody($payload)
-        ->execute();
+
+
+    try {
+
+        $graph
+            ->createRequest("PATCH", "/users/iconway@wcsi.org")
+            ->attachBody($payload)
+            ->execute();
+
+    } catch(Exception $e) {
+
+        info($e->getResponse()->getBody()->getContents());
+        dd($e->getResponse()->getBody()->getContents());
+
+    }
 
 });
