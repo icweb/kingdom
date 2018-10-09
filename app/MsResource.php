@@ -6,9 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use Microsoft\Graph\Graph;
 use Microsoft\Graph\Model\Group;
 use Microsoft\Graph\Model\User;
+use Mpociot\Versionable\VersionableTrait;
 
 class MsResource extends Model
 {
+    use VersionableTrait;
+
+    protected $keepOldVersions = 10;
+
     private $graph;
 
     public $table = 'ms_resources';

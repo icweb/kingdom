@@ -35,7 +35,7 @@ class InitialTables extends Migration
         Schema::create('ms_subscription_notifications', function(Blueprint $table){
             $table->increments('id');
             $table->unsignedInteger('ms_subscription_id');
-            $table->unsignedInteger('resource_id');
+            $table->unsignedInteger('ms_resource_id');
             $table->timestamp('completed_at')->nullable();
             $table->timestamps();
         });
