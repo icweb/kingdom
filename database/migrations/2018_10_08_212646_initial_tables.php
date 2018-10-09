@@ -46,6 +46,22 @@ class InitialTables extends Migration
             $table->timestamps();
         });
 
+        Schema::create('watched_fields', function(Blueprint $table){
+            $table->increments('id');
+            $table->unsignedInteger('author_id');
+            $table->unsignedInteger('subscription_id');
+            $table->string('field');
+            $table->timestamps();
+        });
+
+        Schema::create('subscribed_users', function(Blueprint $table){
+            $table->increments('id');
+            $table->unsignedInteger('author_id');
+            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('subscription_id');
+            $table->timestamps();
+        });
+
         Schema::create('ms_webhooks', function(Blueprint $table){
             $table->increments('id');
             $table->unsignedInteger('ms_subscription_id');
@@ -65,7 +81,7 @@ class InitialTables extends Migration
             $table->string('onPremisesLastSyncDateTime')->nullable();
             $table->string('onPremisesSecurityIdentifier')->nullable();
             $table->string('onPremisesSyncEnabled')->nullable();
-            $table->string('proxyAddresses')->nullable();
+            $table->longText('proxyAddresses')->nullable();
 
             // Groups
             $table->string('description')->nullable();
@@ -182,6 +198,14 @@ class InitialTables extends Migration
 
             $table->timestamps();
         });
+
+        \Illuminate\Support\Facades\DB::statement("CREATE VIEW users AS
+            (
+                SELECT displayName as name, mail as email, created_at, updated_at
+                FROM ms_resources
+                WHERE type = 'USER'
+            )
+        ");
     }
 
     /**

@@ -14,6 +14,7 @@ class AppSeeder extends Seeder
         \App\Token::create([
             'tenant_id'     => env('MSG_TENANT_GUID'),
             'token'         => 'NA',
-            'expires_at'    => time()]);
+            'expires_at'    => time()
+        ]);
     }
 }
