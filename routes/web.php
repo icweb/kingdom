@@ -21,10 +21,8 @@ Route::get('/', function () {
 Route::get('/createusersub', function () {
 
     $subscription = new \App\MsSubscription();
-    $subscription->produce('created', 'groups');
-    $subscription->produce('updated', 'groups');
-    $subscription->produce('created', 'users');
-    $subscription->produce('updated', 'users');
+    $subscription->produce('updated,deleted', 'groups');
+    $subscription->produce('updated,deleted', 'users');
 
     echo '4 subscriptions created';
 
