@@ -211,7 +211,7 @@ class MsResource extends Model
 
             if($type === 'USER')
             {
-                if(isset($user))
+                if(isset($user) && !empty($user->getMailboxSettings()->getAutomaticRepliesSetting()))
                 {
                     $mailboxSettings = $user->getMailboxSettings();
 
