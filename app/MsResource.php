@@ -14,6 +14,8 @@ class MsResource extends Model
 
     protected $keepOldVersions = 10;
 
+    protected $dontVersionFields = ['created_at', 'updated_at'];
+
     private $graph;
 
     public $table = 'ms_resources';
@@ -179,8 +181,6 @@ class MsResource extends Model
                 $data['isSubscribedByMail'] = $group->getIsSubscribedByMail() ? 'Yes' : 'No';
                 $data['unseenCount'] = $group->getUnseenCount();
             }
-
-            info($data);
 
             $ms_resource = MsResource::where(['ms_id' => $ms_id, 'type' => $type])->get();
 
