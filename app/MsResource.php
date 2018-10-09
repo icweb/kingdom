@@ -173,8 +173,6 @@ class MsResource extends Model
 //            $data['unseenCount'] = $group->getUnseenCount();
         }
 
-        info($data);
-
         $ms_resource = MsResource::where(['ms_id' => $ms_id, 'type' => $type])->get();
 
         if(count($ms_resource))
@@ -186,6 +184,8 @@ class MsResource extends Model
         {
             $ms_resource = MsResource::create($data);
         }
+
+        info([$ms_resource]);
 
         return MsResource::findOrFail($ms_resource->id);
     }
