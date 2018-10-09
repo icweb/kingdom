@@ -108,7 +108,7 @@ class MsResource extends Model
                     ->execute();
 
                 $data['displayName'] = $user->getDisplayName();
-                $data['manager_id'] = $user->getManager()->getId();
+               // $data['manager_id'] = $user->getManager()->getId();
                 $data['accountEnabled'] = $user->getAccountEnabled();
                 $data['mobilePhone'] = $user->getMobilePhone();
                 $data['mail'] = $user->getMail();
