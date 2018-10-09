@@ -158,19 +158,19 @@ class MsResource extends Model
             $data['mailNickname'] = $group->getMailNickname();
             $data['mail'] = $group->getMail();
             $data['classification'] = $group->getClassification();
-            $data['createdDateTime'] = $group->getCreatedDateTime();
+//            $data['createdDateTime'] = $group->getCreatedDateTime();
             $data['groupTypes'] = $group->getGroupTypes();
-            $data['onPremisesLastSyncDateTime'] = $group->getOnPremisesLastSyncDateTime();
-            $data['onPremisesSecurityIdentifier'] = $group->getOnPremisesSecurityIdentifier();
-            $data['onPremisesSyncEnabled'] = $group->getOnPremisesSyncEnabled();
-            $data['proxyAddresses'] = $group->getProxyAddresses();
-            $data['renewedDateTime'] = $group->getRenewedDateTime();
-            $data['securityEnabled'] = $group->getSecurityEnabled();
-            $data['visibility'] = $group->getVisibility();
-            $data['allowExternalSenders'] = $group->getAllowExternalSenders();
-            $data['autoSubscribeNewMembers'] = $group->getAutoSubscribeNewMembers();
-            $data['isSubscribedByMail'] = $group->getIsSubscribedByMail();
-            $data['unseenCount'] = $group->getUnseenCount();
+//            $data['onPremisesLastSyncDateTime'] = $group->getOnPremisesLastSyncDateTime();
+//            $data['onPremisesSecurityIdentifier'] = $group->getOnPremisesSecurityIdentifier();
+//            $data['onPremisesSyncEnabled'] = $group->getOnPremisesSyncEnabled();
+//            $data['proxyAddresses'] = $group->getProxyAddresses();
+//            $data['renewedDateTime'] = $group->getRenewedDateTime();
+//            $data['securityEnabled'] = $group->getSecurityEnabled();
+//            $data['visibility'] = $group->getVisibility();
+//            $data['allowExternalSenders'] = $group->getAllowExternalSenders();
+//            $data['autoSubscribeNewMembers'] = $group->getAutoSubscribeNewMembers();
+//            $data['isSubscribedByMail'] = $group->getIsSubscribedByMail();
+//            $data['unseenCount'] = $group->getUnseenCount();
         }
 
         info($data);
