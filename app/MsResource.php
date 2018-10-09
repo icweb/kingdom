@@ -91,27 +91,29 @@ class MsResource extends Model
         return $this->graph;
     }
 
-    public function getOrCreate($ms_id, $type = 'USER')
+    public function getOrCreate($ms_id, $type = 'USER', $changeType)
     {
-        $data = ['ms_id' => $ms_id, 'type'  => $type];
-
-        if($type === 'USER')
+        if($changeType === 'deleted')
         {
-            $user = $this
-                ->graph()
-                ->createRequest("GET", "/users/" . $ms_id)
-                ->setReturnType(User::class)
-                ->execute();
+            $data = ['ms_id' => $ms_id, 'type'  => $type];
 
-            $data['displayName'] = $user->getDisplayName();
-            $data['manager_id'] = $user->getManager()->getId();
-            $data['accountEnabled'] = $user->getAccountEnabled();
-            $data['mobilePhone'] = $user->getMobilePhone();
-            $data['mail'] = $user->getMail();
-            $data['jobTitle'] = $user->getJobTitle();
-            $data['officeLocation'] = $user->getOfficeLocation();
-            $data['department'] = $user->getDepartment();
-            $data['mailNickname'] = $user->getMailNickname();
+            if($type === 'USER')
+            {
+                $user = $this
+                    ->graph()
+                    ->createRequest("GET", "/users/" . $ms_id)
+                    ->setReturnType(User::class)
+                    ->execute();
+
+                $data['displayName'] = $user->getDisplayName();
+                $data['manager_id'] = $user->getManager()->getId();
+                $data['accountEnabled'] = $user->getAccountEnabled();
+                $data['mobilePhone'] = $user->getMobilePhone();
+                $data['mail'] = $user->getMail();
+                $data['jobTitle'] = $user->getJobTitle();
+                $data['officeLocation'] = $user->getOfficeLocation();
+                $data['department'] = $user->getDepartment();
+                $data['mailNickname'] = $user->getMailNickname();
 //            $data['onPremisesLastSyncDateTime'] = $user->getOnPremisesLastSyncDateTime();
 //            $data['onPremisesSecurityIdentifier'] = $user->getOnPremisesSecurityIdentifier();
 //            $data['onPremisesSyncEnabled'] = $user->getOnPremisesSyncEnabled();
@@ -143,53 +145,58 @@ class MsResource extends Model
 //            $data['skills'] = $user->getSkills();
 //            $data['deviceEnrollmentLimit'] = $user->getDeviceEnrollmentLimit();
 
-            if(isset($user->getBusinessPhones()[0])) $data['businessPhone_1'] = $user->getBusinessPhones()[0];
-            if(isset($user->getBusinessPhones()[1])) $data['businessPhone_2'] = $user->getBusinessPhones()[1];
-            if(isset($user->getBusinessPhones()[2])) $data['businessPhone_3'] = $user->getBusinessPhones()[2];
-            if(isset($user->getBusinessPhones()[3])) $data['businessPhone_4'] = $user->getBusinessPhones()[3];
-            if(isset($user->getBusinessPhones()[4])) $data['businessPhone_5'] = $user->getBusinessPhones()[4];
+                if(isset($user->getBusinessPhones()[0])) $data['businessPhone_1'] = $user->getBusinessPhones()[0];
+                if(isset($user->getBusinessPhones()[1])) $data['businessPhone_2'] = $user->getBusinessPhones()[1];
+                if(isset($user->getBusinessPhones()[2])) $data['businessPhone_3'] = $user->getBusinessPhones()[2];
+                if(isset($user->getBusinessPhones()[3])) $data['businessPhone_4'] = $user->getBusinessPhones()[3];
+                if(isset($user->getBusinessPhones()[4])) $data['businessPhone_5'] = $user->getBusinessPhones()[4];
+            }
+            else
+            {
+                $group = $this
+                    ->graph()
+                    ->createRequest("GET", "/groups/" . $ms_id)
+                    ->setReturnType(Group::class)
+                    ->execute();
+
+                $data['displayName'] = $group->getDisplayName();
+                $data['description'] = $group->getDescription();
+                $data['mailEnabled'] = $group->getMailEnabled();
+                $data['mailNickname'] = $group->getMailNickname();
+                $data['mail'] = $group->getMail();
+                $data['classification'] = $group->getClassification();
+                $data['createdDateTime'] = $group->getCreatedDateTime()->format('Y-m-d H:i:s');
+                $data['groupTypes'] = $group->getGroupTypes();
+                $data['onPremisesLastSyncDateTime'] = $group->getOnPremisesLastSyncDateTime()->format('Y-m-d H:i:s');
+                $data['onPremisesSecurityIdentifier'] = $group->getOnPremisesSecurityIdentifier();
+                $data['onPremisesSyncEnabled'] = $group->getOnPremisesSyncEnabled() ? 'Yes' : 'No';
+                $data['proxyAddresses'] = $group->getProxyAddresses();
+                $data['renewedDateTime'] = $group->getRenewedDateTime()->format('Y-m-d H:i:s');
+                $data['securityEnabled'] = $group->getSecurityEnabled() ? 'Yes' : 'No';
+                $data['visibility'] = $group->getVisibility();
+                $data['allowExternalSenders'] = $group->getAllowExternalSenders() ? 'Yes' : 'No';
+                $data['autoSubscribeNewMembers'] = $group->getAutoSubscribeNewMembers() ? 'Yes' : 'No';
+                $data['isSubscribedByMail'] = $group->getIsSubscribedByMail() ? 'Yes' : 'No';
+                $data['unseenCount'] = $group->getUnseenCount();
+            }
+
+            $ms_resource = MsResource::where(['ms_id' => $ms_id, 'type' => $type])->get();
+
+            if(count($ms_resource))
+            {
+                $ms_resource = $ms_resource[0];
+                $ms_resource->update($data);
+            }
+            else
+            {
+                $ms_resource = MsResource::create($data);
+            }
+
+            return MsResource::findOrFail($ms_resource->id);
         }
         else
         {
-            $group = $this
-                ->graph()
-                ->createRequest("GET", "/groups/" . $ms_id)
-                ->setReturnType(Group::class)
-                ->execute();
-
-            $data['displayName'] = $group->getDisplayName();
-            $data['description'] = $group->getDescription();
-            $data['mailEnabled'] = $group->getMailEnabled();
-            $data['mailNickname'] = $group->getMailNickname();
-            $data['mail'] = $group->getMail();
-            $data['classification'] = $group->getClassification();
-            $data['createdDateTime'] = $group->getCreatedDateTime()->format('Y-m-d H:i:s');
-            $data['groupTypes'] = $group->getGroupTypes();
-            $data['onPremisesLastSyncDateTime'] = $group->getOnPremisesLastSyncDateTime()->format('Y-m-d H:i:s');
-            $data['onPremisesSecurityIdentifier'] = $group->getOnPremisesSecurityIdentifier();
-            $data['onPremisesSyncEnabled'] = $group->getOnPremisesSyncEnabled() ? 'Yes' : 'No';
-            $data['proxyAddresses'] = $group->getProxyAddresses();
-            $data['renewedDateTime'] = $group->getRenewedDateTime()->format('Y-m-d H:i:s');
-            $data['securityEnabled'] = $group->getSecurityEnabled() ? 'Yes' : 'No';
-            $data['visibility'] = $group->getVisibility();
-            $data['allowExternalSenders'] = $group->getAllowExternalSenders() ? 'Yes' : 'No';
-            $data['autoSubscribeNewMembers'] = $group->getAutoSubscribeNewMembers() ? 'Yes' : 'No';
-            $data['isSubscribedByMail'] = $group->getIsSubscribedByMail() ? 'Yes' : 'No';
-            $data['unseenCount'] = $group->getUnseenCount();
+            return (object)['id' => 0];
         }
-
-        $ms_resource = MsResource::where(['ms_id' => $ms_id, 'type' => $type])->get();
-
-        if(count($ms_resource))
-        {
-            $ms_resource = $ms_resource[0];
-            $ms_resource->update($data);
-        }
-        else
-        {
-            $ms_resource = MsResource::create($data);
-        }
-
-        return MsResource::findOrFail($ms_resource->id);
     }
 }

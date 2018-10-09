@@ -53,7 +53,7 @@ class MsSubNotification extends Model
                 }
 
                 $resource = new MsResource();
-                $resource = $resource->getOrCreate($item['resourceData']['id'], $resource_type);
+                $resource = $resource->getOrCreate($item['resourceData']['id'], $resource_type, $item['changeType']);
 
                 MsSubNotification::create([
                     'ms_subscription_id' => $ms_sub[0]->id,
