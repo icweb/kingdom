@@ -216,12 +216,12 @@ class MsResource extends Model
                 $ms_resource
                     ->mailboxSettings()
                     ->updateOrCreate([
-                        'externalAudience'          => $user->getAutomaticRepliesSetting()->getExternalAudience(),
-                        'externalReplyMessage'      => $user->getAutomaticRepliesSetting()->getExternalReplyMessage(),
-                        'internalReplyMessage'      => $user->getAutomaticRepliesSetting()->getInternalReplyMessage(),
-                        'scheduledEndDateTime'      => $user->getAutomaticRepliesSetting()->getScheduledEndDateTime()->format('Y-m-d H:i:s'),
-                        'scheduledStartDateTime'    => $user->getAutomaticRepliesSetting()->getScheduledStartDateTime()->format('Y-m-d H:i:s'),
-                        'status'                    => $user->getAutomaticRepliesSetting()->getStatus(),
+                        'externalAudience'          => $mailboxSettings->getAutomaticRepliesSetting()->getExternalAudience(),
+                        'externalReplyMessage'      => $mailboxSettings->getAutomaticRepliesSetting()->getExternalReplyMessage(),
+                        'internalReplyMessage'      => $mailboxSettings->getAutomaticRepliesSetting()->getInternalReplyMessage(),
+                        'scheduledEndDateTime'      => $mailboxSettings->getAutomaticRepliesSetting()->getScheduledEndDateTime()->format('Y-m-d H:i:s'),
+                        'scheduledStartDateTime'    => $mailboxSettings->getAutomaticRepliesSetting()->getScheduledStartDateTime()->format('Y-m-d H:i:s'),
+                        'status'                    => $mailboxSettings->getAutomaticRepliesSetting()->getStatus(),
                     ]);
             }
             else
