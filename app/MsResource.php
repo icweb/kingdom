@@ -250,7 +250,7 @@ class MsResource extends Model
         foreach($resources as $key => $val)
         {
             $iterator = $graph->createCollectionRequest("GET", '/' . $key)
-                ->setReturnType($val)
+                ->setReturnType($key === 'users' ? User::class : Group::class)
                 ->setPageSize(999);
 
             while (!$iterator->isEnd())
