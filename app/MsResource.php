@@ -157,9 +157,9 @@ class MsResource extends Model
             $data['mailEnabled'] = $group->getMailEnabled();
             $data['mailNickname'] = $group->getMailNickname();
             $data['mail'] = $group->getMail();
-            $data['classification'] = $group->getClassification();
+//            $data['classification'] = $group->getClassification();
 //            $data['createdDateTime'] = $group->getCreatedDateTime();
-            $data['groupTypes'] = $group->getGroupTypes();
+//            $data['groupTypes'] = $group->getGroupTypes();
 //            $data['onPremisesLastSyncDateTime'] = $group->getOnPremisesLastSyncDateTime();
 //            $data['onPremisesSecurityIdentifier'] = $group->getOnPremisesSecurityIdentifier();
 //            $data['onPremisesSyncEnabled'] = $group->getOnPremisesSyncEnabled();
