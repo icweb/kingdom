@@ -214,9 +214,8 @@ class MsResource extends Model
                 if(isset($user))
                 {
                     $mailboxSettings = $user->getMailboxSettings();
-                }
 
-                MsMailboxSetting::create([
+                    MsMailboxSetting::create([
                         'resource_id'               => $ms_resource->id,
                         'externalAudience'          => $mailboxSettings->getAutomaticRepliesSetting()->getExternalAudience(),
                         'externalReplyMessage'      => $mailboxSettings->getAutomaticRepliesSetting()->getExternalReplyMessage(),
@@ -225,6 +224,7 @@ class MsResource extends Model
                         'scheduledStartDateTime'    => $mailboxSettings->getAutomaticRepliesSetting()->getScheduledStartDateTime()->format('Y-m-d H:i:s'),
                         'status'                    => $mailboxSettings->getAutomaticRepliesSetting()->getStatus(),
                     ]);
+                }
             }
             else
             {
