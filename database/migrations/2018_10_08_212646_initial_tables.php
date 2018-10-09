@@ -35,6 +35,8 @@ class InitialTables extends Migration
 
         Schema::create('ms_subscriptions', function(Blueprint $table){
             $table->increments('id');
+            $table->unsignedInteger('author_id');
+            $table->unsignedInteger('auto_renew')->default(1);
             $table->string('subscription_id');
             $table->string('resource');
             $table->string('change_type');
@@ -103,7 +105,7 @@ class InitialTables extends Migration
 
             // Users
             $table->string('manager_id')->nullable();
-            $table->boolean('accountEnabled')->default(false);
+            $table->string('accountEnabled')->nullable();
             $table->string('mobilePhone')->nullable();
             $table->string('mail')->nullable();
             $table->string('jobTitle')->nullable();

@@ -14,7 +14,7 @@ class MsResource extends Model
 
     protected $keepOldVersions = 10;
 
-    protected $dontVersionFields = ['created_at', 'updated_at'];
+    protected $dontVersionFields = ['created_at', 'updated_at', 'onPremisesLastSyncDateTime'];
 
     private $graph;
 

@@ -11,36 +11,11 @@
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function () { echo 'You have arrived'; });
 
-    echo 'You have arrived';
+/* Webhooks */
+Route::post('/webhooks', 'MsWebhooksController@receive');
 
-
-});
-
-Route::get('/createusersub', function () {
-
-    $subscription = new \App\MsSubscription();
-    $subscription->produce('updated,deleted', 'groups');
-    $subscription->produce('updated,deleted', 'users');
-
-    echo '4 subscriptions created';
-
-});
-
-Route::post('/webhooks', function (\Illuminate\Http\Request $request) {
-
-    info('webhook hit');
-    //info($request->all());
-
-    if(isset($_GET['validationToken']))
-    {
-        return response($_GET['validationToken'], 200)->header('Content-Type', 'text/plain');
-    }
-
-    $notification = new \App\MsWebhooks();
-    $notification->produce($request->all());
-
-    return response('', 201)->header('Content-Type', 'text/plain');
-
-});
+/* Subscriptions */
+Route::post('subscriptions/{subscription}/renew', 'MsSubscriptionsController@renew')->name('subscriptions.renew');
+Route::resource('subscriptions', 'MsSubscriptionsController');

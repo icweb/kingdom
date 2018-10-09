@@ -11,6 +11,8 @@ class MsSubscription extends Model
     public $table = 'ms_subscriptions';
 
     public $fillable = [
+        'author_id',
+        'auto_renew',
         'subscription_id',
         'resource',
         'change_type',
@@ -32,7 +34,7 @@ class MsSubscription extends Model
         return $this->graph;
     }
 
-    public function produce($changeType, $resource)
+    public function produce($changeType, $resource, $autoRenew = true)
     {
         $sub = new Subscription();
         $sub->setChangeType($changeType);
@@ -49,16 +51,9 @@ class MsSubscription extends Model
             ->setReturnType(Subscription::class)
             ->execute();
 
-//        $ms_sub = new MsSubscription();
-//        $ms_sub->resource = $subscription->getResource();
-//        $ms_sub->change_type = $subscription->getChangeType();
-//        $ms_sub->client_state = $subscription->getClientState();
-//        $ms_sub->notification_url = $subscription->getNotificationUrl();
-//        $ms_sub->expires_at = date('Y-m-d H:i:s', $subscription->getExpirationDateTime()->getTimestamp());
-//        $ms_sub->subscription_id = $subscription->getId();
-//        $ms_sub->save();
-
         $ms_sub = MsSubscription::create([
+            'author_id'         => auth()->user()->id,
+            'auto_renew'        => $autoRenew ? 1 : 0,
             'resource'          => $result->getResource(),
             'change_type'       => $result->getChangeType(),
             'client_state'      => $result->getClientState(),
