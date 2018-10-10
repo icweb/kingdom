@@ -228,6 +228,8 @@ class MsResource extends Model
 
                     $mailboxSettings = $user->getMailboxSettings();
 
+                    info([$user->getMailboxSettings()]);
+
                     if(isset($mailboxSettings))
                     {
                         //info([$mailboxSettings->getAutomaticRepliesSetting()->getExternalAudience()['_value']]);
