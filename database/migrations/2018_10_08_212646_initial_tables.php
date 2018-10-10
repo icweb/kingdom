@@ -223,6 +223,8 @@ class InitialTables extends Migration
             $table->timestamps();
         });
 
+        Schema::dropIfExists('users');
+
         \Illuminate\Support\Facades\DB::statement("CREATE VIEW users AS
             (
                 SELECT id, displayName as name, mail as email, created_at, updated_at
