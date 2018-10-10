@@ -130,18 +130,15 @@ class MsResource extends Model
 
             try{
 
-                info('try reached');
-
                 $resource = $this
                     ->graph()
                     ->createRequest("GET", "/" . $props[$type]['url'] . "/" . $ms_id . $props[$type]['query'])
                     ->setReturnType($props[$type]['class'])
                     ->execute();
 
-                info([$resource]);
-
                 foreach($props[$type]['fields'] as $key => $val)
                 {
+                    info('field value: ' . $resource->$val());
                     $data[$key] = $resource->$val();
                 }
 
@@ -308,7 +305,6 @@ class MsResource extends Model
             {
                 foreach($iterator->getPage() as $item)
                 {
-                    info([$item]);
                     $resource = new MsResource();
                     $resource->getOrCreate($item->getId(), $it['type'], 'updated');
                 }
