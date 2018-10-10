@@ -138,16 +138,16 @@ class MsResource extends Model
                 $data[$key] = $resource->$val();
             }
 
-            foreach($props[$type]['arrays'] as $array)
-            {
-                for($x = 0; $x < $array['length']; $x++)
-                {
-                    if(isset($resource->$array['method']()[$x]))
-                    {
-                        $data['businessPhone_' . ($x + 1)] = $resource->$array['method']()[$x];
-                    }
-                }
-            }
+//            foreach($props[$type]['arrays'] as $array)
+//            {
+//                for($x = 0; $x < $array['length']; $x++)
+//                {
+//                    if(isset($resource->$array['method']()[$x]))
+//                    {
+//                        $data['businessPhone_' . ($x + 1)] = $resource->$array['method']()[$x];
+//                    }
+//                }
+//            }
 
 //            if($type === 'USER')
 //            {
