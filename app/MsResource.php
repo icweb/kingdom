@@ -302,14 +302,13 @@ class MsResource extends Model
                 ->setReturnType($val)
                 ->setPageSize(999);
 
-            info('call from instead resources look');
-            info([$key]);
-            info([$val]);
-
             while (!$iterator->isEnd())
             {
                 foreach($iterator->getPage() as $item)
                 {
+                    info('call from inside interator');
+                    info([$item]);
+
                     $resource = new MsResource();
                     $resource->getOrCreate($item->getId(), substr(strtoupper($key), 0, -1), 'updated');
                 }
