@@ -98,92 +98,139 @@ class MsResource extends Model
     {
         if($changeType !== 'deleted')
         {
+            $ms_resource = MsResource::where(['ms_id' => $ms_id, 'type' => $type])->get();
+
+            $props = [
+                'USER' => [
+                    'url' => 'users',
+                    'query' => '?$select=displayName,accountEnabled,mobilePhone,mail,jobTitle,officeLocation,department,mailNickname,mailboxSettings',
+                    'class' => User::class,
+                    'fields' => [
+                        'displayName',
+                        'accountEnabled',
+                        'mobilePhone',
+                        'mail',
+                        'jobTitle',
+                        'officeLocation',
+                        'department',
+                        'mailNickname',
+                    ],
+                    'arrays' => [
+                        [
+                            'method' => 'getBusinessPhones',
+                            'field' => 'businessPhone_',
+                            'length' => 5
+                        ]
+                    ]
+                ]
+            ];
+
             $data = ['ms_id' => $ms_id, 'type'  => $type];
 
-            if($type === 'USER')
+            $resource = $this
+                ->graph()
+                ->createRequest("GET", "/" . $props[$type]['url'] . "/" . $ms_id . $props[$type]['query'])
+                ->setReturnType($props[$type]['class'])
+                ->execute();
+
+            foreach($props[$type]['fields'] as $field)
             {
-                $user = $this
-                    ->graph()
-                    ->createRequest("GET", "/users/" . $ms_id . '?$select=displayName,accountEnabled,mobilePhone,mail,jobTitle,officeLocation,department,mailNickname,mailboxSettings')
-                    ->setReturnType(User::class)
-                    ->execute();
-
-                $data['displayName'] = $user->getDisplayName();
-               // $data['manager_id'] = $user->getManager()->getId();
-                $data['accountEnabled'] = $user->getAccountEnabled() ? 'Yes' : 'No';
-                $data['mobilePhone'] = $user->getMobilePhone();
-                $data['mail'] = $user->getMail();
-                $data['jobTitle'] = $user->getJobTitle();
-                $data['officeLocation'] = $user->getOfficeLocation();
-                $data['department'] = $user->getDepartment();
-                $data['mailNickname'] = $user->getMailNickname();
-//            $data['onPremisesLastSyncDateTime'] = $user->getOnPremisesLastSyncDateTime();
-//            $data['onPremisesSecurityIdentifier'] = $user->getOnPremisesSecurityIdentifier();
-//            $data['onPremisesSyncEnabled'] = $user->getOnPremisesSyncEnabled();
-//            $data['proxyAddresses'] = $user->getProxyAddresses();
-//            $data['city'] = $user->getCity();
-//            $data['companyName'] = $user->getCompanyName();
-//            $data['country'] = $user->getCountry();
-//            $data['givenName'] = $user->getGivenName();
-//            $data['imAddresses'] = $user->getImAddresses();
-//            $data['onPremisesImmutableId'] = $user->getOnPremisesImmutableId();
-//            $data['passwordPolicies'] = $user->getPasswordPolicies();
-//            $data['postalCode'] = $user->getPostalCode();
-//            $data['preferredLanguage'] = $user->getPreferredLanguage();
-//            $data['state'] = $user->getState();
-//            $data['streetAddress'] = $user->getStreetAddress();
-//            $data['surname'] = $user->getSurname();
-//            $data['usageLocation'] = $user->getUsageLocation();
-//            $data['userPrincipalName'] = $user->getUserPrincipalName();
-//            $data['userType'] = $user->getUserType();
-//            $data['aboutMe'] = $user->getAboutMe();
-//            $data['birthday'] = $user->getBirthday();
-//            $data['hireDate'] = $user->getHireDate();
-//            $data['interests'] = $user->getInterests();
-//            $data['mySite'] = $user->getMySite();
-//            $data['pastProjects'] = $user->getPastProjects();
-//            $data['preferredName'] = $user->getPreferredName();
-//            $data['responsibilities'] = $user->getResponsibilities();
-//            $data['schools'] = $user->getSchools();
-//            $data['skills'] = $user->getSkills();
-//            $data['deviceEnrollmentLimit'] = $user->getDeviceEnrollmentLimit();
-
-                if(isset($user->getBusinessPhones()[0])) $data['businessPhone_1'] = $user->getBusinessPhones()[0];
-                if(isset($user->getBusinessPhones()[1])) $data['businessPhone_2'] = $user->getBusinessPhones()[1];
-                if(isset($user->getBusinessPhones()[2])) $data['businessPhone_3'] = $user->getBusinessPhones()[2];
-                if(isset($user->getBusinessPhones()[3])) $data['businessPhone_4'] = $user->getBusinessPhones()[3];
-                if(isset($user->getBusinessPhones()[4])) $data['businessPhone_5'] = $user->getBusinessPhones()[4];
-            }
-            else
-            {
-                $group = $this
-                    ->graph()
-                    ->createRequest("GET", "/groups/" . $ms_id)
-                    ->setReturnType(Group::class)
-                    ->execute();
-
-                $data['displayName'] = $group->getDisplayName();
-                $data['description'] = $group->getDescription();
-                $data['mailEnabled'] = $group->getMailEnabled();
-                $data['mailNickname'] = $group->getMailNickname();
-                $data['mail'] = $group->getMail();
-                $data['classification'] = $group->getClassification();
-                $data['createdDateTime'] = $group->getCreatedDateTime()->format('Y-m-d H:i:s');
-                $data['groupTypes'] = implode(',', $group->getGroupTypes());
-                $data['onPremisesLastSyncDateTime'] = $group->getOnPremisesLastSyncDateTime()->format('Y-m-d H:i:s');
-                $data['onPremisesSecurityIdentifier'] = $group->getOnPremisesSecurityIdentifier();
-                $data['onPremisesSyncEnabled'] = $group->getOnPremisesSyncEnabled() ? 'Yes' : 'No';
-                $data['proxyAddresses'] = implode(',', $group->getProxyAddresses());
-                $data['renewedDateTime'] = $group->getRenewedDateTime()->format('Y-m-d H:i:s');
-                $data['securityEnabled'] = $group->getSecurityEnabled() ? 'Yes' : 'No';
-                $data['visibility'] = $group->getVisibility();
-                $data['allowExternalSenders'] = $group->getAllowExternalSenders() ? 'Yes' : 'No';
-                $data['autoSubscribeNewMembers'] = $group->getAutoSubscribeNewMembers() ? 'Yes' : 'No';
-                $data['isSubscribedByMail'] = $group->getIsSubscribedByMail() ? 'Yes' : 'No';
-                $data['unseenCount'] = $group->getUnseenCount();
+                $data[$field] = $resource->get . ucfirst($data[$field])();
             }
 
-            $ms_resource = MsResource::where(['ms_id' => $ms_id, 'type' => $type])->get();
+            foreach($props[$type]['arrays'] as $array)
+            {
+                for($x = 0; $x < $array['length']; $x++)
+                {
+                    if(isset($resource->$array['method']()[$x]))
+                    {
+                        $data['businessPhone_' . ($x + 1)] = $resource->$array['method']()[$x];
+                    }
+                }
+            }
+
+//            if($type === 'USER')
+//            {
+//                $user = $this
+//                    ->graph()
+//                    ->createRequest("GET", "/users/" . $ms_id . '?$select=displayName,accountEnabled,mobilePhone,mail,jobTitle,officeLocation,department,mailNickname,mailboxSettings')
+//                    ->setReturnType(User::class)
+//                    ->execute();
+//
+//                $data['displayName'] = $user->getDisplayName();
+//               // $data['manager_id'] = $user->getManager()->getId();
+//                $data['accountEnabled'] = $user->getAccountEnabled() ? 'Yes' : 'No';
+//                $data['mobilePhone'] = $user->getMobilePhone();
+//                $data['mail'] = $user->getMail();
+//                $data['jobTitle'] = $user->getJobTitle();
+//                $data['officeLocation'] = $user->getOfficeLocation();
+//                $data['department'] = $user->getDepartment();
+//                $data['mailNickname'] = $user->getMailNickname();
+////            $data['onPremisesLastSyncDateTime'] = $user->getOnPremisesLastSyncDateTime();
+////            $data['onPremisesSecurityIdentifier'] = $user->getOnPremisesSecurityIdentifier();
+////            $data['onPremisesSyncEnabled'] = $user->getOnPremisesSyncEnabled();
+////            $data['proxyAddresses'] = $user->getProxyAddresses();
+////            $data['city'] = $user->getCity();
+////            $data['companyName'] = $user->getCompanyName();
+////            $data['country'] = $user->getCountry();
+////            $data['givenName'] = $user->getGivenName();
+////            $data['imAddresses'] = $user->getImAddresses();
+////            $data['onPremisesImmutableId'] = $user->getOnPremisesImmutableId();
+////            $data['passwordPolicies'] = $user->getPasswordPolicies();
+////            $data['postalCode'] = $user->getPostalCode();
+////            $data['preferredLanguage'] = $user->getPreferredLanguage();
+////            $data['state'] = $user->getState();
+////            $data['streetAddress'] = $user->getStreetAddress();
+////            $data['surname'] = $user->getSurname();
+////            $data['usageLocation'] = $user->getUsageLocation();
+////            $data['userPrincipalName'] = $user->getUserPrincipalName();
+////            $data['userType'] = $user->getUserType();
+////            $data['aboutMe'] = $user->getAboutMe();
+////            $data['birthday'] = $user->getBirthday();
+////            $data['hireDate'] = $user->getHireDate();
+////            $data['interests'] = $user->getInterests();
+////            $data['mySite'] = $user->getMySite();
+////            $data['pastProjects'] = $user->getPastProjects();
+////            $data['preferredName'] = $user->getPreferredName();
+////            $data['responsibilities'] = $user->getResponsibilities();
+////            $data['schools'] = $user->getSchools();
+////            $data['skills'] = $user->getSkills();
+////            $data['deviceEnrollmentLimit'] = $user->getDeviceEnrollmentLimit();
+//
+//                if(isset($user->getBusinessPhones()[0])) $data['businessPhone_1'] = $user->getBusinessPhones()[0];
+//                if(isset($user->getBusinessPhones()[1])) $data['businessPhone_2'] = $user->getBusinessPhones()[1];
+//                if(isset($user->getBusinessPhones()[2])) $data['businessPhone_3'] = $user->getBusinessPhones()[2];
+//                if(isset($user->getBusinessPhones()[3])) $data['businessPhone_4'] = $user->getBusinessPhones()[3];
+//                if(isset($user->getBusinessPhones()[4])) $data['businessPhone_5'] = $user->getBusinessPhones()[4];
+//            }
+//            else
+//            {
+//                $group = $this
+//                    ->graph()
+//                    ->createRequest("GET", "/groups/" . $ms_id)
+//                    ->setReturnType(Group::class)
+//                    ->execute();
+//
+//                $data['displayName'] = $group->getDisplayName();
+//                $data['description'] = $group->getDescription();
+//                $data['mailEnabled'] = $group->getMailEnabled();
+//                $data['mailNickname'] = $group->getMailNickname();
+//                $data['mail'] = $group->getMail();
+//                $data['classification'] = $group->getClassification();
+//                $data['createdDateTime'] = $group->getCreatedDateTime()->format('Y-m-d H:i:s');
+//                $data['groupTypes'] = implode(',', $group->getGroupTypes());
+//                $data['onPremisesLastSyncDateTime'] = $group->getOnPremisesLastSyncDateTime()->format('Y-m-d H:i:s');
+//                $data['onPremisesSecurityIdentifier'] = $group->getOnPremisesSecurityIdentifier();
+//                $data['onPremisesSyncEnabled'] = $group->getOnPremisesSyncEnabled() ? 'Yes' : 'No';
+//                $data['proxyAddresses'] = implode(',', $group->getProxyAddresses());
+//                $data['renewedDateTime'] = $group->getRenewedDateTime()->format('Y-m-d H:i:s');
+//                $data['securityEnabled'] = $group->getSecurityEnabled() ? 'Yes' : 'No';
+//                $data['visibility'] = $group->getVisibility();
+//                $data['allowExternalSenders'] = $group->getAllowExternalSenders() ? 'Yes' : 'No';
+//                $data['autoSubscribeNewMembers'] = $group->getAutoSubscribeNewMembers() ? 'Yes' : 'No';
+//                $data['isSubscribedByMail'] = $group->getIsSubscribedByMail() ? 'Yes' : 'No';
+//                $data['unseenCount'] = $group->getUnseenCount();
+//            }
 
             if(count($ms_resource))
             {
@@ -195,27 +242,27 @@ class MsResource extends Model
                 $ms_resource = MsResource::create($data);
             }
 
-            if($type === 'USER' && isset($user))
-            {
-                $mailboxSettings = $user->getMailboxSettings();
-
-                if(isset($mailboxSettings))
-                {
-                    MsMailboxSetting::create([
-                        'resource_id'               => $ms_resource->id,
-                        'externalAudience'          => $mailboxSettings->getAutomaticRepliesSetting()->getExternalAudience()->value(),
-                        'externalReplyMessage'      => $mailboxSettings->getAutomaticRepliesSetting()->getExternalReplyMessage(),
-                        'internalReplyMessage'      => $mailboxSettings->getAutomaticRepliesSetting()->getInternalReplyMessage(),
-                        'scheduledEndDateTime'      => $mailboxSettings->getAutomaticRepliesSetting()->getScheduledEndDateTime()->getDateTime(),
-                        'scheduledStartDateTime'    => $mailboxSettings->getAutomaticRepliesSetting()->getScheduledStartDateTime()->getDateTime(),
-                        'status'                    => $mailboxSettings->getAutomaticRepliesSetting()->getStatus()->value(),
-                    ]);
-                }
-            }
-            else
-            {
-
-            }
+//            if($type === 'USER' && isset($user))
+//            {
+//                $mailboxSettings = $user->getMailboxSettings();
+//
+//                if(isset($mailboxSettings))
+//                {
+//                    MsMailboxSetting::create([
+//                        'resource_id'               => $ms_resource->id,
+//                        'externalAudience'          => $mailboxSettings->getAutomaticRepliesSetting()->getExternalAudience()->value(),
+//                        'externalReplyMessage'      => $mailboxSettings->getAutomaticRepliesSetting()->getExternalReplyMessage(),
+//                        'internalReplyMessage'      => $mailboxSettings->getAutomaticRepliesSetting()->getInternalReplyMessage(),
+//                        'scheduledEndDateTime'      => $mailboxSettings->getAutomaticRepliesSetting()->getScheduledEndDateTime()->getDateTime(),
+//                        'scheduledStartDateTime'    => $mailboxSettings->getAutomaticRepliesSetting()->getScheduledStartDateTime()->getDateTime(),
+//                        'status'                    => $mailboxSettings->getAutomaticRepliesSetting()->getStatus()->value(),
+//                    ]);
+//                }
+//            }
+//            else
+//            {
+//
+//            }
 
             return MsResource::findOrFail($ms_resource->id);
         }
