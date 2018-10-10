@@ -96,6 +96,8 @@ class MsResource extends Model
 
     public function getOrCreate($ms_id, $type = 'USER', $changeType, $apiResults = false)
     {
+        info('getOrCreate reached with change type ' . $changeType);
+
         if($changeType !== 'deleted')
         {
             $ms_resource = MsResource::where(['ms_id' => $ms_id, 'type' => $type])->get();
