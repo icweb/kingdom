@@ -213,11 +213,13 @@ class MsResource extends Model
             {
                 try{
 
-                    $mailboxSettings = $this
-                        ->graph()
-                        ->createRequest("GET", "/users/" . $ms_id . '/mailboxSettings')
-                        ->setReturnType(MailboxSettings::class)
-                        ->execute();
+//                    $mailboxSettings = $this
+//                        ->graph()
+//                        ->createRequest("GET", "/users/" . $ms_id . '/mailboxSettings')
+//                        ->setReturnType(MailboxSettings::class)
+//                        ->execute();
+
+                    $mailboxSettings = $user->getMailboxSettings();
 
                     if(isset($mailboxSettings))
                     {
