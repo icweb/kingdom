@@ -221,7 +221,7 @@ class MsResource extends Model
 
                     if(isset($mailboxSettings))
                     {
-                        info([$mailboxSettings->getAutomaticRepliesSetting()->getExternalAudience()]);
+                        info([$mailboxSettings->getAutomaticRepliesSetting()->getExternalAudience()['_value']]);
 
                         MsMailboxSetting::create([
                             'resource_id'               => $ms_resource->id,
