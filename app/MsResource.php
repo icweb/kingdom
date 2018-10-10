@@ -127,16 +127,38 @@ class MsResource extends Model
 
             $data = ['ms_id' => $ms_id, 'type'  => $type];
 
-            $resource = $this
-                ->graph()
-                ->createRequest("GET", "/" . $props[$type]['url'] . "/" . $ms_id . $props[$type]['query'])
-                ->setReturnType($props[$type]['class'])
-                ->execute();
+            try{
 
-            foreach($props[$type]['fields'] as $key => $val)
-            {
-                $data[$key] = $resource->$val();
+                $resource = $this
+                    ->graph()
+                    ->createRequest("GET", "/" . $props[$type]['url'] . "/" . $ms_id . $props[$type]['query'])
+                    ->setReturnType($props[$type]['class'])
+                    ->execute();
+
+                foreach($props[$type]['fields'] as $key => $val)
+                {
+                    $data[$key] = $resource->$val();
+                }
+
+                if(count($ms_resource))
+                {
+                    $ms_resource = $ms_resource[0];
+                    $ms_resource->update($data);
+                }
+                else
+                {
+                    $ms_resource = MsResource::create($data);
+                }
+
+                return MsResource::findOrFail($ms_resource->id);
+
+            } catch(\Exception $e) {
+
+
+
             }
+
+
 
 //            foreach($props[$type]['arrays'] as $array)
 //            {
@@ -232,15 +254,6 @@ class MsResource extends Model
 //                $data['unseenCount'] = $group->getUnseenCount();
 //            }
 
-            if(count($ms_resource))
-            {
-                $ms_resource = $ms_resource[0];
-                $ms_resource->update($data);
-            }
-            else
-            {
-                $ms_resource = MsResource::create($data);
-            }
 
 //            if($type === 'USER' && isset($user))
 //            {
@@ -264,7 +277,7 @@ class MsResource extends Model
 //
 //            }
 
-            return MsResource::findOrFail($ms_resource->id);
+
         }
         else
         {
