@@ -286,20 +286,20 @@ class MsResource extends Model
         $graph = $graph->setAccessToken(Token::fetch());
 
         $resources = [
-//            'users'  => User::class,
-            //'groups' => Group::class,
-            [
-                'name' => 'users',
-                'type' => 'USER',
-                'class' => User::class,
-                'query' => ''
-            ]
+            'users'  => User::class,
+            'groups' => Group::class,
+//            [
+//                'name' => 'users',
+//                'type' => 'USER',
+//                'class' => User::class,
+//                'query' => ''
+//            ]
         ];
 
-        foreach($resources as $it)
+        foreach($resources as $key => $val)
         {
-            $iterator = $graph->createCollectionRequest("GET", '/' . $it['name'] . $it['query'])
-                ->setReturnType($it['class'])
+            $iterator = $graph->createCollectionRequest("GET", '/' . $key)
+                ->setReturnType($val)
                 ->setPageSize(999);
 
             while (!$iterator->isEnd())
@@ -307,7 +307,7 @@ class MsResource extends Model
                 foreach($iterator->getPage() as $item)
                 {
                     $resource = new MsResource();
-                    $resource->getOrCreate($item->getId(), $it['type'], 'updated');
+                    $resource->getOrCreate($item->getId(), substr(strtoupper($key), 0, -1), 'updated');
                 }
             }
         }
