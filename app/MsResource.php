@@ -107,7 +107,7 @@ class MsResource extends Model
             $props = [
                 'USER' => [
                     'url' => 'users',
-                    'query' => '?$select=displayName,accountEnabled,mobilePhone,mail,jobTitle,officeLocation,department,mailNickname,mailboxSettings',
+                    'query' => '?$select=displayName,accountEnabled,mobilePhone,mail,jobTitle,officeLocation,department,mailNickname',
                     'extensions' => true,
                     'class' => User::class,
                     'fields' => [
