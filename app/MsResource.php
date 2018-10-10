@@ -136,6 +136,7 @@ class MsResource extends Model
                     ->setReturnType($props[$type]['class'])
                     ->execute();
 
+                info($props[$type]['fields']);
                 foreach($props[$type]['fields'] as $key => $val)
                 {
                     info('field value: ' . $resource->$val());
