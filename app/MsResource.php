@@ -297,7 +297,7 @@ class MsResource extends Model
                 'name' => 'users',
                 'type' => 'USER',
                 'class' => User::class,
-                'query' => '?$select=displayName'
+                'query' => ''
             ]
         ];
 
