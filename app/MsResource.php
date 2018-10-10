@@ -211,27 +211,32 @@ class MsResource extends Model
 
             if($type === 'USER' && isset($user))
             {
-//                $mailboxSettings = $user->getMailboxSettings();
-                $mailboxSettings = $this
-                    ->graph()
-                    ->createRequest("GET", "/users/" . $ms_id . '/mailboxSettings')
-                    ->setReturnType(MailboxSettings::class)
-                    ->execute();
+                try{
 
+                    $mailboxSettings = $this
+                        ->graph()
+                        ->createRequest("GET", "/users/" . $ms_id . '/mailboxSettings')
+                        ->setReturnType(MailboxSettings::class)
+                        ->execute();
 
-                if(isset($mailboxSettings))
+                    if(isset($mailboxSettings))
+                    {
+                        info([$mailboxSettings->getAutomaticRepliesSetting()->getExternalAudience()]);
+
+                        MsMailboxSetting::create([
+                            'resource_id'               => $ms_resource->id,
+                            //'externalAudience'          => $mailboxSettings->getAutomaticRepliesSetting()->getExternalAudience()->_value,
+                            'externalReplyMessage'      => $mailboxSettings->getAutomaticRepliesSetting()->getExternalReplyMessage(),
+                            'internalReplyMessage'      => $mailboxSettings->getAutomaticRepliesSetting()->getInternalReplyMessage(),
+                            'scheduledEndDateTime'      => $mailboxSettings->getAutomaticRepliesSetting()->getScheduledEndDateTime()->getDateTime(),
+                            'scheduledStartDateTime'    => $mailboxSettings->getAutomaticRepliesSetting()->getScheduledStartDateTime()->getDateTime(),
+                            //'status'                    => $mailboxSettings->getAutomaticRepliesSetting()->getStatus()->_value,
+                        ]);
+                    }
+
+                } catch(\Exception $x)
                 {
-                    info([$mailboxSettings->getAutomaticRepliesSetting()->getExternalAudience()]);
 
-                    MsMailboxSetting::create([
-                        'resource_id'               => $ms_resource->id,
-                        //'externalAudience'          => $mailboxSettings->getAutomaticRepliesSetting()->getExternalAudience()->_value,
-                        'externalReplyMessage'      => $mailboxSettings->getAutomaticRepliesSetting()->getExternalReplyMessage(),
-                        'internalReplyMessage'      => $mailboxSettings->getAutomaticRepliesSetting()->getInternalReplyMessage(),
-                        'scheduledEndDateTime'      => $mailboxSettings->getAutomaticRepliesSetting()->getScheduledEndDateTime()->getDateTime(),
-                        'scheduledStartDateTime'    => $mailboxSettings->getAutomaticRepliesSetting()->getScheduledStartDateTime()->getDateTime(),
-                        //'status'                    => $mailboxSettings->getAutomaticRepliesSetting()->getStatus()->_value,
-                    ]);
                 }
             }
             else
