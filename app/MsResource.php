@@ -102,18 +102,25 @@ class MsResource extends Model
 
             if($type === 'USER')
             {
-                if($apiResults)
-                {
-                    $user = $apiResults;
-                }
-                else
-                {
-                    $user = $this
-                        ->graph()
-                        ->createRequest("GET", "/users/" . $ms_id . '$?select=displayName,accountEnabled,mobilePhone,mail,jobTitle,officeLocation,department,mailNickname,mailboxSettings')
-                        ->setReturnType(User::class)
-                        ->execute();
-                }
+//                if($apiResults)
+//                {
+//                    $user = $apiResults;
+//                }
+//                else
+//                {
+//                    //'$?select=displayName,accountEnabled,mobilePhone,mail,jobTitle,officeLocation,department,mailNickname,mailboxSettings'
+//                    $user = $this
+//                        ->graph()
+//                        ->createRequest("GET", "/users/" . $ms_id )
+//                        ->setReturnType(User::class)
+//                        ->execute();
+//                }
+
+                $user = $this
+                    ->graph()
+                    ->createRequest("GET", "/users/" . $ms_id )
+                    ->setReturnType(User::class)
+                    ->execute();
 
                 $data['displayName'] = $user->getDisplayName();
                // $data['manager_id'] = $user->getManager()->getId();
