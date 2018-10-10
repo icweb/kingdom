@@ -297,7 +297,7 @@ class MsResource extends Model
                 'name' => 'users',
                 'type' => 'USER',
                 'class' => User::class,
-                'query' => '?$select=displayName,accountEnabled,mobilePhone,mail,jobTitle,officeLocation,department,mailNickname,mailboxSettings'
+                'query' => '?$select=displayName'
             ]
         ];
 
@@ -312,7 +312,7 @@ class MsResource extends Model
                 foreach($iterator->getPage() as $item)
                 {
                     $resource = new MsResource();
-                    $resource->getOrCreate($item->getId(), $it['type'], 'updated', $item);
+                    $resource->getOrCreate($item->getId(), $it['type'], 'updated');
                 }
             }
         }
