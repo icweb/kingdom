@@ -2,12 +2,15 @@
 
 namespace App;
 
-use Microsoft\Graph\Graph;
 use Illuminate\Database\Eloquent\Model;
-use Microsoft\Graph\Model\Subscription;
+use Mpociot\Versionable\VersionableTrait;
 
 class MsMailboxSetting extends Model
 {
+    use VersionableTrait;
+
+    protected $keepOldVersions = 10;
+
     public $table = 'ms_mailbox_settings';
 
     public $fillable = [

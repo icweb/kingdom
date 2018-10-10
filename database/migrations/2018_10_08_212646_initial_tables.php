@@ -223,7 +223,7 @@ class InitialTables extends Migration
             $table->timestamps();
         });
 
-        Schema::dropIfExists('users');
+        \Illuminate\Support\Facades\DB::statement("DROP VIEW users");
 
         \Illuminate\Support\Facades\DB::statement("CREATE VIEW users AS
             (

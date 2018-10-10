@@ -103,17 +103,18 @@ class MsResource extends Model
             $props = [
                 'USER' => [
                     'url' => 'users',
-                    'query' => '?$select=displayName,accountEnabled,mobilePhone,mail,jobTitle,officeLocation,department,mailNickname,mailboxSettings',
+                    'query' => '?$select=displayName,accountEnabled,mobilePhone,mail,jobTitle,officeLocation,department,mailNickname,mailboxSettings$expand=extensions',
+                    'extensions' => true,
                     'class' => User::class,
                     'fields' => [
-                        'displayName'       => 'getDisplayName',
-                        'accountEnabled'    => 'getAccountEnabled',
-                        'mobilePhone'       => 'getMobilePhone',
-                        'mail'              => 'getMail',
-                        'jobTitle'          => 'getJobTitle',
-                        'officeLocation'    => 'getOfficeLocation',
-                        'department'        => 'getDepartment',
-                        'mailNickname'      => 'getMailNickname',
+                        'displayName' => 'getDisplayName',
+                        'accountEnabled' => 'getAccountEnabled',
+                        'mobilePhone' => 'getMobilePhone',
+                        'mail' => 'getMail',
+                        'jobTitle' => 'getJobTitle',
+                        'officeLocation' => 'getOfficeLocation',
+                        'department' => 'getDepartment',
+                        'mailNickname' => 'getMailNickname',
                     ],
                     'arrays' => [
                         [
@@ -129,11 +130,18 @@ class MsResource extends Model
 
             try{
 
-                $resource = $this
-                    ->graph()
-                    ->createRequest("GET", "/" . $props[$type]['url'] . "/" . $ms_id . $props[$type]['query'])
-                    ->setReturnType($props[$type]['class'])
-                    ->execute();
+                if($apiResults)
+                {
+                    $resource = $apiResults;
+                }
+                else
+                {
+                    $resource = $this
+                        ->graph()
+                        ->createRequest("GET", "/" . $props[$type]['url'] . "/" . $ms_id . $props[$type]['query'])
+                        ->setReturnType($props[$type]['class'])
+                        ->execute();
+                }
 
                 foreach($props[$type]['fields'] as $key => $val)
                 {
@@ -269,28 +277,6 @@ class MsResource extends Model
 //            }
 
 
-//            if($type === 'USER' && isset($user))
-//            {
-//                $mailboxSettings = $user->getMailboxSettings();
-//
-//                if(isset($mailboxSettings))
-//                {
-//                    MsMailboxSetting::create([
-//                        'resource_id'               => $ms_resource->id,
-//                        'externalAudience'          => $mailboxSettings->getAutomaticRepliesSetting()->getExternalAudience()->value(),
-//                        'externalReplyMessage'      => $mailboxSettings->getAutomaticRepliesSetting()->getExternalReplyMessage(),
-//                        'internalReplyMessage'      => $mailboxSettings->getAutomaticRepliesSetting()->getInternalReplyMessage(),
-//                        'scheduledEndDateTime'      => $mailboxSettings->getAutomaticRepliesSetting()->getScheduledEndDateTime()->getDateTime(),
-//                        'scheduledStartDateTime'    => $mailboxSettings->getAutomaticRepliesSetting()->getScheduledStartDateTime()->getDateTime(),
-//                        'status'                    => $mailboxSettings->getAutomaticRepliesSetting()->getStatus()->value(),
-//                    ]);
-//                }
-//            }
-//            else
-//            {
-//
-//            }
-
 
         }
         else
@@ -305,14 +291,20 @@ class MsResource extends Model
         $graph = $graph->setAccessToken(Token::fetch());
 
         $resources = [
-            'users'  => User::class,
-            'groups' => Group::class
+//            'users'  => User::class,
+            //'groups' => Group::class,
+            [
+                'name' => 'users',
+                'type' => 'USER',
+                'class' => User::class,
+                'query' => '?$select=displayName,accountEnabled,mobilePhone,mail,jobTitle,officeLocation,department,mailNickname,mailboxSettings$expand=extensions'
+            ]
         ];
 
-        foreach($resources as $key => $val)
+        foreach($resources as $it)
         {
-            $iterator = $graph->createCollectionRequest("GET", '/' . $key)
-                ->setReturnType($val)
+            $iterator = $graph->createCollectionRequest("GET", '/' . $it['name'] . $it['query'])
+                ->setReturnType($it['class'])
                 ->setPageSize(999);
 
             while (!$iterator->isEnd())
@@ -320,7 +312,7 @@ class MsResource extends Model
                 foreach($iterator->getPage() as $item)
                 {
                     $resource = new MsResource();
-                    $resource->getOrCreate($item->getId(), substr(strtoupper($key), 0, -1), 'updated', $item);
+                    $resource->getOrCreate($item->getId(), $it['type'], 'updated', $item);
                 }
             }
         }
