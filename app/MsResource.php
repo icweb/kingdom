@@ -100,6 +100,8 @@ class MsResource extends Model
 
         if($changeType !== 'deleted')
         {
+            info('getOrCreate passed condition !== deleted');
+
             $ms_resource = MsResource::where(['ms_id' => $ms_id, 'type' => $type])->get();
 
             $props = [
@@ -131,6 +133,8 @@ class MsResource extends Model
             $data = ['ms_id' => $ms_id, 'type'  => $type];
 
             try{
+
+                info('try reached');
 
                 $resource = $this
                     ->graph()
@@ -175,7 +179,10 @@ class MsResource extends Model
 
                 return MsResource::findOrFail($ms_resource->id);
 
-            } catch(\Exception $e) {}
+            } catch(\Exception $e) {
+                info('exception occured');
+                info([$e]);
+            }
 
 
 
@@ -308,9 +315,6 @@ class MsResource extends Model
             {
                 foreach($iterator->getPage() as $item)
                 {
-                    info('call from inside interator');
-                    info([$item]);
-
                     $resource = new MsResource();
                     $resource->getOrCreate($item->getId(), substr(strtoupper($key), 0, -1), 'updated');
                 }
