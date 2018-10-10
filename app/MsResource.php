@@ -106,14 +106,14 @@ class MsResource extends Model
                     'query' => '?$select=displayName,accountEnabled,mobilePhone,mail,jobTitle,officeLocation,department,mailNickname,mailboxSettings',
                     'class' => User::class,
                     'fields' => [
-                        'displayName',
-                        'accountEnabled',
-                        'mobilePhone',
-                        'mail',
-                        'jobTitle',
-                        'officeLocation',
-                        'department',
-                        'mailNickname',
+                        'displayName'       => 'getDisplayName',
+                        'accountEnabled'    => 'getAccountEnabled',
+                        'mobilePhone'       => 'getMobilePhone',
+                        'mail'              => 'getMail',
+                        'jobTitle'          => 'getJobTitle',
+                        'officeLocation'    => 'getOfficeLocation',
+                        'department'        => 'getDepartment',
+                        'mailNickname'      => 'getMailNickname',
                     ],
                     'arrays' => [
                         [
@@ -133,9 +133,9 @@ class MsResource extends Model
                 ->setReturnType($props[$type]['class'])
                 ->execute();
 
-            foreach($props[$type]['fields'] as $field)
+            foreach($props[$type]['fields'] as $key => $val)
             {
-                $data[$field] = $resource->get . ucfirst($data[$field])();
+                $data[$key] = $resource->$val();
             }
 
             foreach($props[$type]['arrays'] as $array)
