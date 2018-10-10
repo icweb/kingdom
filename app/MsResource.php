@@ -150,13 +150,27 @@ class MsResource extends Model
                     $ms_resource = MsResource::create($data);
                 }
 
+                if($type === 'USER')
+                {
+                    $mailboxSettings = $resource->getMailboxSettings();
+
+                    if(isset($mailboxSettings))
+                    {
+                        MsMailboxSetting::create([
+                            'resource_id'               => $ms_resource->id,
+                            'externalAudience'          => $mailboxSettings->getAutomaticRepliesSetting()->getExternalAudience()->value(),
+                            'externalReplyMessage'      => $mailboxSettings->getAutomaticRepliesSetting()->getExternalReplyMessage(),
+                            'internalReplyMessage'      => $mailboxSettings->getAutomaticRepliesSetting()->getInternalReplyMessage(),
+                            'scheduledEndDateTime'      => $mailboxSettings->getAutomaticRepliesSetting()->getScheduledEndDateTime()->getDateTime(),
+                            'scheduledStartDateTime'    => $mailboxSettings->getAutomaticRepliesSetting()->getScheduledStartDateTime()->getDateTime(),
+                            'status'                    => $mailboxSettings->getAutomaticRepliesSetting()->getStatus()->value(),
+                        ]);
+                    }
+                }
+
                 return MsResource::findOrFail($ms_resource->id);
 
-            } catch(\Exception $e) {
-
-
-
-            }
+            } catch(\Exception $e) {}
 
 
 
