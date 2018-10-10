@@ -110,7 +110,7 @@ class MsResource extends Model
                 {
                     $user = $this
                         ->graph()
-                        ->createRequest("GET", "/users/" . $ms_id)
+                        ->createRequest("GET", "/users/" . $ms_id . '$?select=displayName,accountEnabled,mobilePhone,mail,jobTitle,officeLocation,department,mailNickname,mailboxSettings')
                         ->setReturnType(User::class)
                         ->execute();
                 }
