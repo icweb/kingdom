@@ -219,10 +219,10 @@ class MsResource extends Model
                     ->execute();
 
 
-                info([$mailboxSettings]);
-
                 if(isset($mailboxSettings))
                 {
+                    info([$mailboxSettings->getAutomaticRepliesSetting()->getStatus()]);
+
                     MsMailboxSetting::create([
                         'resource_id'               => $ms_resource->id,
                         'externalAudience'          => $mailboxSettings->getAutomaticRepliesSetting()->getExternalAudience(),
