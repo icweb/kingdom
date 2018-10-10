@@ -221,16 +221,14 @@ class MsResource extends Model
 
                 if(isset($mailboxSettings))
                 {
-                    info([$mailboxSettings->getAutomaticRepliesSetting()->getStatus()->value]);
-
                     MsMailboxSetting::create([
                         'resource_id'               => $ms_resource->id,
-                        'externalAudience'          => $mailboxSettings->getAutomaticRepliesSetting()->getExternalAudience()->value,
+                        'externalAudience'          => $mailboxSettings->getAutomaticRepliesSetting()->getExternalAudience()->_value,
                         'externalReplyMessage'      => $mailboxSettings->getAutomaticRepliesSetting()->getExternalReplyMessage(),
                         'internalReplyMessage'      => $mailboxSettings->getAutomaticRepliesSetting()->getInternalReplyMessage(),
                         'scheduledEndDateTime'      => $mailboxSettings->getAutomaticRepliesSetting()->getScheduledEndDateTime()->getDateTime(),
                         'scheduledStartDateTime'    => $mailboxSettings->getAutomaticRepliesSetting()->getScheduledStartDateTime()->getDateTime(),
-                        'status'                    => $mailboxSettings->getAutomaticRepliesSetting()->getStatus()->value,
+                        'status'                    => $mailboxSettings->getAutomaticRepliesSetting()->getStatus()->_value,
                     ]);
                 }
             }
