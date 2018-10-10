@@ -130,18 +130,11 @@ class MsResource extends Model
 
             try{
 
-                if($apiResults)
-                {
-                    $resource = $apiResults;
-                }
-                else
-                {
-                    $resource = $this
-                        ->graph()
-                        ->createRequest("GET", "/" . $props[$type]['url'] . "/" . $ms_id . $props[$type]['query'])
-                        ->setReturnType($props[$type]['class'])
-                        ->execute();
-                }
+                $resource = $this
+                    ->graph()
+                    ->createRequest("GET", "/" . $props[$type]['url'] . "/" . $ms_id . $props[$type]['query'])
+                    ->setReturnType($props[$type]['class'])
+                    ->execute();
 
                 foreach($props[$type]['fields'] as $key => $val)
                 {
