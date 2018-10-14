@@ -20,6 +20,20 @@ Route::post('/webhooks', 'MsWebhooksController@receive');
 Route::post('subscriptions/{subscription}/renew', 'MsSubscriptionsController@renew')->name('subscriptions.renew');
 Route::resource('subscriptions', 'MsSubscriptionsController');
 
+Route::get('/getmanagerinfo', function () {
+
+    $graph = new \Microsoft\Graph\Graph();
+    $graph = $graph->setAccessToken(\App\Token::fetch());
+
+    $user = $graph
+        ->createRequest("GET", "/users/iconway@wcsi.org")
+        ->setReturnType(\Microsoft\Graph\Model\User::class)
+        ->execute();
+
+    dd($user->getManager());
+
+});
+
 Route::get('/setianbirthday', function () {
 
     $graph = new \Microsoft\Graph\Graph();
