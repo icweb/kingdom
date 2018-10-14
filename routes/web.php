@@ -31,6 +31,7 @@ Route::get('/getmanagerinfo', function () {
         ->execute();
 
     dd($user);
+    dd($user->getManager());
 
 });
 
