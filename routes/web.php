@@ -30,7 +30,7 @@ Route::get('/getmanagerinfo', function () {
         ->setReturnType(\Microsoft\Graph\Model\User::class)
         ->execute();
 
-    dd($user);
+    //dd($user);
     dd($user->getManager());
 
 });
