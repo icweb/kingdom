@@ -107,7 +107,8 @@ class MsResource extends Model
             $props = [
                 'USER' => [
                     'url' => 'users',
-                    'query' => '?$select=displayName,accountEnabled,mobilePhone,mail,jobTitle,officeLocation,department,mailNickname',
+//                    'query' => '?$select=displayName,accountEnabled,mobilePhone,mail,jobTitle,officeLocation,department,mailNickname',
+                    'query' => '?$expand=mailboxSettings,manager',
                     'extensions' => true,
                     'class' => User::class,
                     'fields' => [
@@ -138,6 +139,7 @@ class MsResource extends Model
 
                 $resource = $this
                     ->graph()
+                    ->setApiVersion('beta')
                     ->createRequest("GET", "/" . $props[$type]['url'] . "/" . $ms_id . $props[$type]['query'])
                     ->setReturnType($props[$type]['class'])
                     ->execute();
