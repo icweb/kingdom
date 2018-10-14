@@ -26,7 +26,7 @@ Route::get('/getmanagerinfo', function () {
     $graph = $graph->setAccessToken(\App\Token::fetch());
 
     $user = $graph
-        ->createRequest("GET", '/users/iconway@wcsi.org?$expand=children')
+        ->createRequest("GET", '/users/iconway@wcsi.org?$expand=manager')
         ->setReturnType(\Microsoft\Graph\Model\User::class)
         ->execute();
 
