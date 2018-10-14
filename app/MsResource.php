@@ -108,7 +108,7 @@ class MsResource extends Model
                 'USER' => [
                     'url' => 'users',
 //                    'query' => '?$select=displayName,accountEnabled,mobilePhone,mail,jobTitle,officeLocation,department,mailNickname',
-                    'query' => '?$expand=mailboxSettings,manager',
+                    'query' => '?$select=displayName,accountEnabled,mobilePhone,mail,jobTitle,officeLocation,department,mailNickname&$expand=manager',
                     'extensions' => true,
                     'class' => User::class,
                     'fields' => [
