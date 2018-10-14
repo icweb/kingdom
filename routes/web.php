@@ -27,7 +27,7 @@ Route::get('/getmanagerinfo', function () {
 
     $user = $graph
         ->setApiVersion('beta')
-        ->createRequest("GET", '/users/iconway@wcsi.org?$expand=manager&$select=displayName,accountEnabled,mobilePhone,mail,jobTitle,officeLocation,department,mailNickname,mailboxSettings,manager')
+        ->createRequest("GET", '/users/iconway@wcsi.org?$expand=manager')
         ->setReturnType(\Microsoft\Graph\Model\User::class)
         ->execute();
 
